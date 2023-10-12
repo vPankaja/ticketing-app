@@ -1,0 +1,60 @@
+/* Footer Container */
+.footer {
+  background-color: #222; /* Footer background color */
+  color: white; /* Footer text color */
+  padding: 30px 0;
+  text-align: center;
+}
+
+/* Footer Content */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Footer Logo */
+.footer-logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Footer Links */
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #FF5733; /* Hover color for links */
+}
+
+/* Footer Social Icons */
+.footer-social a {
+  text-decoration: none;
+  color: white;
+  margin: 0 10px;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #FF5733; /* Hover color for social icons */
+}
+
+/* Footer Text */
+.footer-text {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.7;
+}

@@ -1,0 +1,68 @@
+
+
+/* Add this CSS to your stylesheet */
+.button-container {
+  display: flex;
+  justify-content: center; /* Center-align buttons horizontally */
+  margin-top: 20px; /* Add margin for spacing */
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff; /* Adjust the button's background color */
+  color: #fff; /* Adjust the text color */
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px; /* Add margin for spacing between buttons */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-transparent {
+  background-color: transparent;
+  border: none;
+  color: #eee8e8;
+  background-color: rgb(224, 158, 78); /* Change the text color to your preference */
+  /* Add any additional styling as needed */
+}
+
+
+.button:hover {
+  background-color: #0056b3; /* Adjust the button's background color on hover */
+}
+
+.heading{
+  color: rgb(237, 165, 82);
+    margin-top: 70px;
+    text-align: center;
+    
+}
+
+.center-content {
+    text-align: center;
+    justify-content: center;
+}
+
+.para {
+    text-align: justify;
+    width: 500px;
+}
+
+.hed{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 22px;
+}
+
+.second{
+  margin-top: 100px;
+}
+
+.button-text {
+    background-color: #007BFF;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+
+
