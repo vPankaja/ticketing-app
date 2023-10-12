@@ -42,7 +42,7 @@ class TableReser extends Component {
 
 
   onDelete = (id) => {
-    axios.delete(`http://localhost:8000/item/delete/${id}`).then((res) => {
+    axios.delete(`/delete/${id}`).then((res) => {
       if (res.data.success) {
         swal("Deleted Successful", "Category is removed", "success");
         this.retrievePosts();
