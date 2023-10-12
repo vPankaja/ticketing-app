@@ -11,17 +11,19 @@ import EditReservation from './components/Pages/Item/Reservation/EditReservation
 import TableReser from './components/Pages/Item/Reservation/TableReser';
 import AddTrain from './components/Pages/Item/Train/AddTrain';
 import TrainTable from './components/Pages/Item/Train/TrainTable';
+import UsersTable from './components/Pages/Item/Users/Userstables';
+import AdminDashboard from './components/Pages/Item/Admin/AdminDashboard';
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
-      <div className="container">
+      <div className="">
         <div>
           <Routes>
             {/* booking */}
             <Route path="/" element={<Home />} />
-            
+
             {/* Train */}
             <Route path="/addtrain" element={<AddTrain />} />
             <Route path="/tabletrain" element={<TrainTable />} />
@@ -29,17 +31,21 @@ function App() {
 
             {/* Reservation */}
             <Route path="/addreservation" element={<AddReservation />} />
-             <Route path="/editreservation" element={<EditReservation />} />
-             <Route path="/tablereser" element={<TableReser />} />
-             
-             
-             
+            <Route path="/editreservation" element={<EditReservation />} />
+            <Route path="/tablereser" element={<TableReser />} />
+
+            {/* User */}
+            <Route path="/tableuser" element={<UsersTable />} />
+
 
 
             {/* Auth */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
 
+
+            {/* Admin */}
+            <Route path="/admindash" element={<AdminDashboard />} />
 
           </Routes>
         </div>
