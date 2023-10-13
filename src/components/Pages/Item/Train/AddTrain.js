@@ -7,19 +7,51 @@ export default class AddTrainReservation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      travelerID: "",
-      reservationDate: "",
-      bookingDate: "",
-      trainID: "",
+      name: "",
+      date: "",
+      startTime: "",
       startLocation: "",
       destination: "",
-      trainClass: "",
-      departureTime: "",
-      price: "",
+      trainclass: "",
       seatCount: 0,
-      status: 1,
+      remainingSeats: 0,
+      isActive: 0,
+      stoppingStations: [
+        {
+          stationName: "",
+          stationCount: 0,
+          arrivalTime: "",
+          departureTime: "",
+        },
+      ],
     };
   }
+
+  addStoppingStation = () => {
+    const currentStationCount = this.state.stoppingStations.length;
+
+    // Add a new station with an incremented station count
+    this.setState((prevState) => ({
+      stoppingStations: [
+        ...prevState.stoppingStations,
+        {
+          stationName: "",
+          stationCount: currentStationCount,
+          arrivalTime: "",
+          departureTime: "",
+        },
+      ],
+    }));
+  };
+
+  removeStoppingStation = (index) => {
+    this.setState((prevState) => ({
+      stoppingStations: [
+        ...prevState.stoppingStations.slice(0, index),
+        ...prevState.stoppingStations.slice(index + 1),
+      ],
+    }));
+  };
 
   handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,60 +60,80 @@ export default class AddTrainReservation extends Component {
     });
   };
 
+  handleTimeInputChange = (e, index, field) => {
+    const value = e.target.value;
+
+    if (field === "startTime") {
+      this.setState({
+        [field]: value,
+      });
+    } else {
+      this.setState((prevState) => {
+        const stoppingStations = [...prevState.stoppingStations];
+        stoppingStations[index][field] = value;
+        return { stoppingStations };
+      });
+    }
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
 
-    // Data validation
     if (this.validateForm()) {
+      this.setState({
+        isActive: 1,
+        remainingSeats: this.state.seatCount,
+      });
+
       const {
-        travelerID,
-        reservationDate,
-        bookingDate,
-        trainID,
+        name,
+        date,
+        startTime,
         startLocation,
         destination,
-        trainClass,
-        departureTime,
-        price,
+        trainclass,
         seatCount,
-        status,
+        stoppingStations,
       } = this.state;
 
       const data = {
-        travelerID,
-        reservationDate,
-        bookingDate,
-        trainID,
+        name,
+        date,
+        startTime,
         startLocation,
         destination,
-        trainClass,
-        departureTime,
-        price,
+        trainclass,
         seatCount,
-        status,
+        stoppingStations,
       };
 
       // Make a POST request to your API endpoint
       axios
-        .post("/api/trainreservations/add", data) // Adjust the endpoint to your actual API
+        .post("/api/trains/add", data)
         .then((res) => {
           if (res.data.success) {
             this.setState({
-              travelerID: "",
-              reservationDate: "",
-              bookingDate: "",
-              trainID: "",
+              name: "",
+              date: "",
+              startTime: "",
               startLocation: "",
               destination: "",
-              trainClass: "",
-              departureTime: "",
-              price: "",
+              trainclass: "",
               seatCount: 0,
-              status: 1,
+              remainingSeats: 0,
+              isActive: 0,
+              stoppingStations: [
+                {
+                  stationName: "",
+                  stationCount: 0,
+                  arrivalTime: "",
+                  departureTime: "",
+                },
+              ],
             });
             swal.fire(
-              "Reservation Added Successfully!",
-              "New reservation is added to the system",
+              "Train Added Successfully!",
+              "New Train added to the system",
               "success"
             );
           }
@@ -95,42 +147,57 @@ export default class AddTrainReservation extends Component {
   // Validation function
   validateForm = () => {
     const {
-      travelerID,
-      reservationDate,
-      bookingDate,
-      trainID,
+      name,
+      date,
+      startTime,
       startLocation,
       destination,
-      trainClass,
-      departureTime,
-      price,
+      trainclass,
       seatCount,
-      status,
+      stoppingStations,
     } = this.state;
 
     if (
-      !travelerID ||
-      !reservationDate ||
-      !bookingDate ||
-      !trainID ||
+      !name ||
+      !date ||
+      !startTime ||
       !startLocation ||
       !destination ||
-      !trainClass ||
-      !departureTime ||
-      !price ||
+      !trainclass ||
       !seatCount ||
-      !status
+      !stoppingStations
     ) {
       swal.fire("Validation Error", "All fields are required.", "error");
       return false;
     }
 
     // Add more specific validation rules here
-
     return true;
   };
 
   render() {
+    const locations = [
+      "Galle",
+      "Weligama",
+      "Matara",
+      "Beliaththa",
+      "Hikkaduwa",
+      "Ambalangoda",
+      "Aluthgama",
+      "Kalutara",
+      "Panadura",
+      "Moratuwa",
+      "Dehiwala",
+      "Bambalapitiya",
+      "Colombo Fort",
+    ];
+
+    const stationNames = [
+      "Galle", "Weligama", "Matara", "Beliaththa", "Hikkaduwa", "Ambalangoda",
+      "Aluthgama", "Kalutara", "Panadura", "Moratuwa", "Dehiwala", "Bambalapitiya",
+      "Colombo Fort"
+    ];
+
     return (
       <div>
         <div className="container1 form1">
@@ -148,30 +215,244 @@ export default class AddTrainReservation extends Component {
               <div className="card1" style={{ width: "85%" }}>
                 <div className="card-body">
                   <div className="col-md-8 mt-4 mx-auto">
-                    <h1 className="text-center topic1 text1">Add Train Reservation Form</h1>
+                    <h1 className="text-center topic1 text1">Add Trains</h1>
                     <form className="needs-validation form" noValidate>
-                      {/* Add form inputs for travelerID, reservationDate, etc. */}
-                      <div className="form-group" style={{ marginBottom: "15px" }}>
-                        <label style={{ marginBottom: "5px" }}>Traveler ID: </label>
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>
+                          Train Name:{" "}
+                        </label>
                         <input
                           type="text"
-                          id="travelerID"
+                          id="name"
                           className="form-control"
-                          name="travelerID"
-                          placeholder="Traveler ID"
-                          value={this.state.travelerID}
+                          name="name"
+                          placeholder="Train Name"
+                          value={this.state.name}
+                          style={{ width: "100%" }}
+                          onChange={this.handleInputChange}
+                          required
+                        />
+                      </div>
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>Date: </label>
+                        <input
+                          type="text"
+                          id="date"
+                          className="form-control"
+                          name="date"
+                          placeholder="Date"
+                          value={this.state.date}
+                          style={{ width: "100%" }}
+                          onChange={this.handleInputChange}
+                          required
+                        />
+                      </div>
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>
+                          Start Time:{" "}
+                        </label>
+                        <input
+                          type="time"
+                          className="form-control"
+                          name="startTime"
+                          value={this.state.startTime}
+                          style={{ width: "100%" }}
+                          onChange={(e) =>
+                            this.handleTimeInputChange(e, 0, "startTime")
+                          }
+                          required
+                        />
+                      </div>
+
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>
+                          Start Location:
+                        </label>
+                        <select
+                          className="form-control"
+                          name="startLocation"
+                          value={this.state.startLocation}
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Start Location</option>
+                          {locations.map((location, index) => (
+                            <option key={index} value={location}>
+                              {location}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>
+                          Destination:
+                        </label>
+                        <select
+                          className="form-control"
+                          name="destination"
+                          value={this.state.destination}
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Destination</option>
+                          {locations.map((location, index) => (
+                            <option key={index} value={location}>
+                              {location}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>
+                          Train Class:{" "}
+                        </label>
+                        <select
+                          id="trainclass"
+                          className="form-control"
+                          name="trainclass"
+                          value={this.state.trainclass}
+                          style={{ width: "100%" }}
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Train Class</option>
+                          <option value="A">A</option>
+                          <option value="B">B</option>
+                          <option value="C">C</option>
+                        </select>
+                      </div>
+
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <label style={{ marginBottom: "5px" }}>
+                          Seat Count:{" "}
+                        </label>
+                        <input
+                          type="number"
+                          id="seatCount"
+                          className="form-control"
+                          name="seatCount"
+                          placeholder="Seat Count"
+                          value={this.state.seatCount}
                           style={{ width: "100%" }}
                           onChange={this.handleInputChange}
                           required
                         />
                       </div>
 
-                      {/* Add more form input fields for other data */}
-                      {/* ... */}
+                      {/* Stopping Stations */}
+                      {this.state.stoppingStations.map((station, index) => (
+                        <div key={index}>
+                          <h2>Stopping Station {station.stationCount + 1}</h2>
+                          <div className="form-group" style={{ marginBottom: "15px" }}>
+  <label style={{ marginBottom: "5px" }}>Station Name:</label>
+  <select
+    className="form-control"
+    name="stationName"
+    value={this.state.stoppingStations[index].stationName}
+    onChange={(e) => this.handleTimeInputChange(e, index, "stationName")}
+    required
+  >
+    <option value="">Select Station Name</option>
+    {stationNames.map((stationName, stationIndex) => (
+      <option key={stationIndex} value={stationName}>
+        {stationName}
+      </option>
+    ))}
+  </select>
+</div>
 
+                          <div
+                            className="form-group"
+                            style={{ marginBottom: "15px" }}
+                          >
+                            <label style={{ marginBottom: "5px" }}>
+                              Arrival Time:{" "}
+                            </label>
+                            <input
+                              type="time"
+                              className="form-control"
+                              name="arrivalTime"
+                              value={station.arrivalTime}
+                              style={{ width: "100%" }}
+                              onChange={(e) =>
+                                this.handleTimeInputChange(
+                                  e,
+                                  index,
+                                  "arrivalTime"
+                                )
+                              }
+                              required
+                            />
+                          </div>
+                          <div
+                            className="form-group"
+                            style={{ marginBottom: "15px" }}
+                          >
+                            <label style={{ marginBottom: "5px" }}>
+                              Departure Time:{" "}
+                            </label>
+                            <input
+                              type="time"
+                              className="form-control"
+                              name="departureTime"
+                              value={station.departureTime}
+                              style={{ width: "100%" }}
+                              onChange={(e) =>
+                                this.handleTimeInputChange(
+                                  e,
+                                  index,
+                                  "departureTime"
+                                )
+                              }
+                              required
+                            />
+                          </div>
+
+                          {index !== 0 && (
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              onClick={() => this.removeStoppingStation(index)}
+                            >
+                              Remove Station
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={this.addStoppingStation}
+                      >
+                        Add Station
+                      </button>
+                      <br />
+                      <br />
                       <button
                         className="btn btn-primary btn-lg"
                         type="submit"
+                        href="/allTrains"
                         onClick={this.onSubmit}
                         style={{
                           marginTop: "15px",

@@ -10,7 +10,7 @@ import AddReservation from './components/Pages/Item/Reservation/AddReservation';
 import EditReservation from './components/Pages/Item/Reservation/EditReservation';
 import TableReser from './components/Pages/Item/Reservation/TableReser';
 import AddTrain from './components/Pages/Item/Train/AddTrain';
-import TrainTable from './components/Pages/Item/Train/TrainTable';
+import AllTrains from './components/Pages/Item/Train/AllTrains';
 import UsersTable from './components/Pages/Item/Users/Userstables';
 import AdminDashboard from './components/Pages/Item/Admin/AdminDashboard';
 
@@ -26,7 +26,7 @@ function App() {
 
             {/* Train */}
             <Route path="/addtrain" element={<AddTrain />} />
-            <Route path="/tabletrain" element={<TrainTable />} />
+            <Route path="/alltrains" element={<AllTrains />} />
 
 
             {/* Reservation */}

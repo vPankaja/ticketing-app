@@ -1,8 +1,8 @@
 /* Footer Container */
 .footer {
-  background-color: #222; /* Footer background color */
-  color: white; /* Footer text color */
-  padding: 30px 0;
+  background-color: #222;
+  color: white;
+  padding: 30px 20px; /* Add padding to both left and right sides */
   text-align: center;
 }
 
@@ -11,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 20px; /* Add margin to both left and right sides */
 }
 
 /* Footer Logo */
@@ -36,7 +37,7 @@
 }
 
 .footer-links a:hover {
-  color: #FF5733; /* Hover color for links */
+  color: #FF5733;
 }
 
 /* Footer Social Icons */
@@ -49,7 +50,7 @@
 }
 
 .footer-social a:hover {
-  color: #FF5733; /* Hover color for social icons */
+  color: #FF5733;
 }
 
 /* Footer Text */

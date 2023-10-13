@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
 import swal from "sweetalert";
+import "./Train.css";
+import { Link } from "react-router-dom";
 
 
-class TrainTable extends Component {
+
+class AllTrains extends Component {
   constructor(props) {
     super(props);
 
@@ -61,7 +64,11 @@ class TrainTable extends Component {
       <div>
         <br />
         <h2 className="text1">Train Details</h2>
-
+        <div className="add-button">
+            <Link to="/addTrain" className="btn btn-primary">
+              Add New Train
+            </Link>
+          </div>
 
         <div >
      <table className="table table-striped table-bordered table-hover">
@@ -69,16 +76,13 @@ class TrainTable extends Component {
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Date</th>
-              <th scope="col">Booking Date</th>
-              <th scope="col">StART tIME</th>
+              <th scope="col">Start Time</th>
               <th scope="col">Start Location</th>
               <th scope="col">Destination</th>
               <th scope="col">Train Class</th>
               <th scope="col">Seat Count</th>
-              <th scope="col">Price</th>
-              <th scope="col">Seat Count</th>
-              <th scope="col">RemainingSeats</th>
-              <th scope="col">isActive</th>
+              <th scope="col">Remaining Seats</th>
+              <th scope="col">Actions</th>
              
             </tr>
           </thead>
@@ -86,29 +90,33 @@ class TrainTable extends Component {
             {this.state.posts.map((post, index) => (
               <tr key={index}>
                 <td>{post.name}</td>
-                <td>{post.date}</td>
-                <td>{post.bookingDate}</td>
-                <td>{post.startTime}</td>
+                <td>{new Date(post.date).toLocaleDateString()}</td>
+                <td>{new Date(post.startTime).toLocaleTimeString()}</td> 
                 <td>{post.startLocation}</td>
                 <td>{post.destination}</td>
-                <td>{post.trainclass}</td>
+                <td>{post.trainClass}</td>
                 <td>{post.seatCount}</td>
-                <td>{post.price}</td>
                 <td>{post.remainingSeats}</td>
-                <td>{post.isActive}</td>
                 <td>
-                  <a className="btn btn-warning" href={`/supplier/update/${post._id}`}>
-                    <i className="fas fa-edit"></i>&nbsp;Edit
-                  </a>
-                  &nbsp;
-                  <a
-                    className="btn btn-danger"
-                    href="#"
-                    onClick={() => this.onDelete(post._id)}
-                  >
-                    <i className="fas fa-edit"></i>&nbsp;Delete
-                  </a>
-                </td>
+                      <div className="button-container">
+                        <Link to={`/viewTrain/${post._id}`} className="btn btn-info">
+                          <i className="fas fa-eye"></i>&nbsp;View
+                        </Link>
+                        <a
+                          className="btn btn-warning"
+                          href={`/supplier/update/${post._id}`}
+                        >
+                          <i className="fas fa-edit"></i>&nbsp;Edit
+                        </a>
+                        <a
+                          className="btn btn-danger"
+                          href="#"
+                          onClick={() => this.onDelete(post._id)}
+                        >
+                          <i className="fas fa-trash"></i>&nbsp;Delete
+                        </a>
+                      </div>
+                    </td>
               </tr>
             ))}
           </tbody>
@@ -122,4 +130,4 @@ class TrainTable extends Component {
 
 }
 
-export default TrainTable;
+export default AllTrains;
