@@ -41,20 +41,6 @@ class TableReser extends Component {
 
 
 
-  onDelete = (id) => {
-    axios.delete(`api/reservations/cancel/${id}`).then((res) => {
-      if (res.data.success) {
-        swal("Deleted Successful", "Category is removed", "success");
-        this.retrievePosts();
-      } else {
-        swal("Deleted Successful", "Category is removed", "success");
-      }
-    });
-  };
-
-
-
-
   render() {
     return (
       <div className="tabl">
