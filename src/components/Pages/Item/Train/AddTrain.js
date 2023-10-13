@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import swal from "sweetalert2";
+import swal from "sweetalert";
 import train from "../../../images/train.png";
 
 export default class AddTrainReservation extends Component {
@@ -111,6 +111,8 @@ export default class AddTrainReservation extends Component {
       axios
         .post("/api/trains/add", data)
         .then((res) => {
+          console.log("Response from POST request:", res); // Add this line
+
           if (res.data.success) {
             this.setState({
               name: "",
@@ -131,15 +133,29 @@ export default class AddTrainReservation extends Component {
                 },
               ],
             });
-            swal.fire(
-              "Train Added Successfully!",
-              "New Train added to the system",
-              "success"
-            );
+
+            // Use SweetAlert to show a success message
+            swal
+              .fire({
+                icon: "success",
+                title: "Success",
+                text: "Train Added Successful",
+              })
+              .then(() => {
+                // Redirect to the "/alltrains" page
+                window.location.href = "/alltrains";
+              });
           }
         })
         .catch((error) => {
-          swal.fire("Error", "An error occurred.", "error");
+          console.log("Error in POST request:", error); // Add this line
+
+          // Use SweetAlert to show an error message
+          swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred.",
+          });
         });
     }
   };
@@ -193,9 +209,19 @@ export default class AddTrainReservation extends Component {
     ];
 
     const stationNames = [
-      "Galle", "Weligama", "Matara", "Beliaththa", "Hikkaduwa", "Ambalangoda",
-      "Aluthgama", "Kalutara", "Panadura", "Moratuwa", "Dehiwala", "Bambalapitiya",
-      "Colombo Fort"
+      "Galle",
+      "Weligama",
+      "Matara",
+      "Beliaththa",
+      "Hikkaduwa",
+      "Ambalangoda",
+      "Aluthgama",
+      "Kalutara",
+      "Panadura",
+      "Moratuwa",
+      "Dehiwala",
+      "Bambalapitiya",
+      "Colombo Fort",
     ];
 
     return (
@@ -242,13 +268,11 @@ export default class AddTrainReservation extends Component {
                       >
                         <label style={{ marginBottom: "5px" }}>Date: </label>
                         <input
-                          type="text"
-                          id="date"
+                          type="date"
                           className="form-control"
                           name="date"
                           placeholder="Date"
                           value={this.state.date}
-                          style={{ width: "100%" }}
                           onChange={this.handleInputChange}
                           required
                         />
@@ -270,6 +294,7 @@ export default class AddTrainReservation extends Component {
                             this.handleTimeInputChange(e, 0, "startTime")
                           }
                           required
+                          step="1800"
                         />
                       </div>
 
@@ -364,23 +389,36 @@ export default class AddTrainReservation extends Component {
                       {this.state.stoppingStations.map((station, index) => (
                         <div key={index}>
                           <h2>Stopping Station {station.stationCount + 1}</h2>
-                          <div className="form-group" style={{ marginBottom: "15px" }}>
-  <label style={{ marginBottom: "5px" }}>Station Name:</label>
-  <select
-    className="form-control"
-    name="stationName"
-    value={this.state.stoppingStations[index].stationName}
-    onChange={(e) => this.handleTimeInputChange(e, index, "stationName")}
-    required
-  >
-    <option value="">Select Station Name</option>
-    {stationNames.map((stationName, stationIndex) => (
-      <option key={stationIndex} value={stationName}>
-        {stationName}
-      </option>
-    ))}
-  </select>
-</div>
+                          <div
+                            className="form-group"
+                            style={{ marginBottom: "15px" }}
+                          >
+                            <label style={{ marginBottom: "5px" }}>
+                              Station Name:
+                            </label>
+                            <select
+                              className="form-control"
+                              name="stationName"
+                              value={
+                                this.state.stoppingStations[index].stationName
+                              }
+                              onChange={(e) =>
+                                this.handleTimeInputChange(
+                                  e,
+                                  index,
+                                  "stationName"
+                                )
+                              }
+                              required
+                            >
+                              <option value="">Select Station Name</option>
+                              {stationNames.map((stationName, stationIndex) => (
+                                <option key={stationIndex} value={stationName}>
+                                  {stationName}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
 
                           <div
                             className="form-group"
@@ -403,6 +441,7 @@ export default class AddTrainReservation extends Component {
                                 )
                               }
                               required
+                              step="1800"
                             />
                           </div>
                           <div
@@ -426,6 +465,7 @@ export default class AddTrainReservation extends Component {
                                 )
                               }
                               required
+                              step="1800"
                             />
                           </div>
 

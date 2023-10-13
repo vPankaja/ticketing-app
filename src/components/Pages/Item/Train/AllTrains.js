@@ -45,33 +45,41 @@ class AllTrains extends Component {
 
 
   onDelete = (id) => {
-    axios.delete(`http://localhost:8000/item/delete/${id}`).then((res) => {
-      if (res.data.success) {
-        swal("Deleted Successful", "Category is removed", "success");
-        this.retrievePosts();
-      } else {
-        swal("Deleted Successful", "Category is removed", "success");
-      }
-    });
+    axios
+      .delete(`/api/trains/cancel/${id}`)
+      .then((res) => {
+        if (res.data.success) {
+          swal("Deletion Failed", "Category was not removed", "error");
+          console.error("Delete Failed - Server Response:", res.data);
+        } else {
+          swal("Deleted Successful", "Category is removed", "success");
+          this.retrievePosts();
+        }
+      })
+      .catch((error) => {
+        console.error("Axios Error:", error);
+        swal("Network Error", "Failed to connect to the server", "error");
+      });
   };
-
+  
+  
+  
 
 
 
   render() {
     return (
-      <div className="tabl">
-      <div>
-        <br />
-        <h2 className="text1">Train Details</h2>
-        <div className="add-button">
-            <Link to="/addTrain" className="btn btn-primary">
-              Add New Train
-            </Link>
-          </div>
-
-        <div >
-     <table className="table table-striped table-bordered table-hover">
+<div className="container">
+  <div className="tabl">
+    <br />
+    <h2 className="text1">Train Details</h2>
+    <div className="add-button">
+      <Link to="/addTrain" className="btn btn-primary">
+        Add New Train
+      </Link>
+    </div>
+    <div>
+      <table className="table table-striped table-bordered table-hover">
           <thead className="thead-dark">
             <tr>
               <th scope="col">Name</th>
@@ -89,9 +97,10 @@ class AllTrains extends Component {
           <tbody>
             {this.state.posts.map((post, index) => (
               <tr key={index}>
+                <td style={{ display: "none" }}>{post.id}</td>
                 <td>{post.name}</td>
                 <td>{new Date(post.date).toLocaleDateString()}</td>
-                <td>{new Date(post.startTime).toLocaleTimeString()}</td> 
+                <td>{post.startTime}</td>
                 <td>{post.startLocation}</td>
                 <td>{post.destination}</td>
                 <td>{post.trainClass}</td>
@@ -99,32 +108,22 @@ class AllTrains extends Component {
                 <td>{post.remainingSeats}</td>
                 <td>
                       <div className="button-container">
-                        <Link to={`/viewTrain/${post._id}`} className="btn btn-info">
+                        <Link to={`/ViewTrain/${post.id}`} className="btn btn-info">
                           <i className="fas fa-eye"></i>&nbsp;View
                         </Link>
-                        <a
-                          className="btn btn-warning"
-                          href={`/supplier/update/${post._id}`}
-                        >
-                          <i className="fas fa-edit"></i>&nbsp;Edit
-                        </a>
-                        <a
-                          className="btn btn-danger"
-                          href="#"
-                          onClick={() => this.onDelete(post._id)}
-                        >
-                          <i className="fas fa-trash"></i>&nbsp;Delete
-                        </a>
+                        <button className="btn btn-danger" onClick={() => this.onDelete(post.id)}>
+                          <i className="fas fa-trash" href="#"></i>&nbsp;Delete
+                        </button>
+
                       </div>
                     </td>
               </tr>
             ))}
           </tbody>
-        </table>
-
-      </div>
-    </div >
+          </table>
     </div>
+  </div>
+</div>
   );
   }
 

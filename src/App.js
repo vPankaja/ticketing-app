@@ -13,8 +13,11 @@ import AddTrain from './components/Pages/Item/Train/AddTrain';
 import AllTrains from './components/Pages/Item/Train/AllTrains';
 import UsersTable from './components/Pages/Item/Users/Userstables';
 import AdminDashboard from './components/Pages/Item/Admin/AdminDashboard';
+import ViewTrain from './components/Pages/Item/Train/ViewTrain';
+import SearchTrain from './components/Pages/Item/Train/SearchTrain';
+import TrainList from './components/Pages/Item/Train/TrainList';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Header />
@@ -27,6 +30,9 @@ function App() {
             {/* Train */}
             <Route path="/addtrain" element={<AddTrain />} />
             <Route path="/alltrains" element={<AllTrains />} />
+            <Route path="/trains/:id" component={ViewTrain} />
+            <Route path="/trainlist" element={<TrainList />} />
+            <Route path="/searchtrain" element={<SearchTrain />} />
 
 
             {/* Reservation */}
