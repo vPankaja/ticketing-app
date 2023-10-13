@@ -41,82 +41,72 @@ class TableReser extends Component {
 
 
 
-  onDelete = (id) => {
-    axios.delete(`/delete/${id}`).then((res) => {
-      if (res.data.success) {
-        swal("Deleted Successful", "Category is removed", "success");
-        this.retrievePosts();
-      } else {
-        swal("Deleted Successful", "Category is removed", "success");
-      }
-    });
-  };
-
-
-
-
   render() {
     return (
       <div className="tabl">
-      <div>
-        <br />
-        <h2 className="text1">Reservation Details</h2>
+        <div>
+          <br />
+          <h2 className="text1">Reservation Details</h2>
 
 
-        <div >
-     <table className="table table-striped table-bordered table-hover">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">Traveler ID</th>
-              <th scope="col">Reservation Date</th>
-              <th scope="col">Booking Date</th>
-              <th scope="col">Train ID</th>
-              <th scope="col">Start Location</th>
-              <th scope="col">Destination</th>
-              <th scope="col">Train Class</th>
-              <th scope="col">Departure Time</th>
-              <th scope="col">Price</th>
-              <th scope="col">Seat Count</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.posts.map((post, index) => (
-              <tr key={index}>
-                <td>{post.travelerID}</td>
-                <td>{post.reservationDate}</td>
-                <td>{post.bookingDate}</td>
-                <td>{post.trainID}</td>
-                <td>{post.startLocation}</td>
-                <td>{post.destination}</td>
-                <td>{post.trainClass}</td>
-                <td>{post.departureTime}</td>
-                <td>{post.price}</td>
-                <td>{post.seatCount}</td>
-                <td>{post.status}</td>
-                <td>
-                  <a className="btn btn-warning" href={`/supplier/update/${post._id}`}>
-                    <i className="fas fa-edit"></i>&nbsp;Edit
-                  </a>
-                  &nbsp;
-                  <a
-                    className="btn btn-danger"
-                    href="#"
-                    onClick={() => this.onDelete(post._id)}
-                  >
-                    <i className="fas fa-edit"></i>&nbsp;Delete
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <div >
+            <table className="table table-striped table-bordered table-hover">
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col">Traveler ID</th>
+                  <th scope="col">Reservation Date</th>
+                  <th scope="col">Booking Date</th>
+                  <th scope="col">Train ID</th>
+                  <th scope="col">Start Location</th>
+                  <th scope="col">Destination</th>
+                  <th scope="col">Train Class</th>
+                  <th scope="col">Departure Time</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Seat Count</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.posts.map((post, index) => (
+                  <tr key={index}>
+                    <td>{post.travelerID}</td>
+                    <td>{post.reservationDate}</td>
+                    <td>{post.bookingDate}</td>
+                    <td>{post.trainID}</td>
+                    <td>{post.startLocation}</td>
+                    <td>{post.destination}</td>
+                    <td>{post.trainClass}</td>
+                    <td>{post.departureTime}</td>
+                    <td>{post.price}</td>
+                    <td>{post.seatCount}</td>
+                    <td>
+                      {post.status === 1 ? 'Reserved' : (post.status === 0 ? 'Available' : 'Invalid Status')}
+                    </td>
 
+
+                    <td>
+                      <a className="btn btn-warning" href={`/supplier/update/${post._id}`}>
+                        <i className="fas fa-edit"></i>&nbsp;Edit
+                      </a>
+                      &nbsp;
+                      <a
+                        className="btn btn-danger"
+                        href="#"
+                        onClick={() => this.onDelete(post._id)}
+                      >
+                        <i className="fas fa-edit"></i>&nbsp;Delete
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+          </div>
+        </div >
       </div>
-    </div >
-    </div>
-  );
+    );
   }
 
 }
