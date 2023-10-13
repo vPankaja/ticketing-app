@@ -23,6 +23,7 @@ function Header() {
           <li><a href="/">Home</a></li>
           <li><a href="/addreservation">Reservation</a></li>
           <li><a href="/addbooking">Booking</a></li>
+          <li><a href="/allTrains">Train Management</a></li>
           <li><a href="#">About</a></li>
           <li><a href="#">Services</a></li>
           <li><a href="#">Contact</a></li>
