@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import train from "../../../images/train.png";
+import { Link  } from "react-router-dom";
 
 export default class AddTrainReservation extends Component {
   constructor(props) {
@@ -205,6 +206,12 @@ export default class AddTrainReservation extends Component {
     ];
     return (
       <div className="container">
+                    <br />
+      <div className="back-button-container">
+        <Link to="#" onClick={() => window.history.back()} className="back-button">
+          &lt; Back
+        </Link>
+      </div>
         <div className="row">
           <div className="col-md-6">
             <div className="col-md-6">
@@ -392,7 +399,9 @@ export default class AddTrainReservation extends Component {
                   </div>
 
                   <br />
-                  <br />
+                  <br /><div style={{ marginBottom: "15px", fontSize: "14px" }}>
+  (Please add the stations in the order of the train route, also add start station and destination)
+</div>
                   <table className="table">
                     <thead>
                       <tr>
