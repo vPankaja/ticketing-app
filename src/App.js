@@ -30,7 +30,7 @@ const App = () => {
             {/* Train */}
             <Route path="/addtrain" element={<AddTrain />} />
             <Route path="/alltrains" element={<AllTrains />} />
-            <Route path="/trains/:id" component={ViewTrain} />
+            <Route path="/trains/:id" element={<ViewTrain />} />
             <Route path="/trainlist" element={<TrainList />} />
             <Route path="/searchtrain" element={<SearchTrain />} />
 
