@@ -22,12 +22,10 @@ class AllTrains extends Component {
   retrievePosts() {
     axios.get("/api/trains/getall")
       .then((res) => {
-        console.log(res.data); // Log the response to inspect its structure
+        console.log(res.data);
 
-        // Check if the response status is successful
         if (res.status === 200) {
-          // Assuming the data is an array of reservations with a "destination" property
-          const reservations = res.data; // Modify this based on your API response structure
+          const reservations = res.data; 
           this.setState({
             posts: reservations,
           });
@@ -36,7 +34,6 @@ class AllTrains extends Component {
         }
       })
       .catch((error) => {
-        // Handle API request errors here (e.g., display an error message).
         console.error("API request failed:", error);
       });
   }
@@ -48,13 +45,8 @@ class AllTrains extends Component {
     axios
       .delete(`/api/trains/cancel/${id}`)
       .then((res) => {
-        if (res.data.success) {
-          swal("Deletion Failed", "Category was not removed", "error");
-          console.error("Delete Failed - Server Response:", res.data);
-        } else {
           swal("Deleted Successful", "Category is removed", "success");
           this.retrievePosts();
-        }
       })
       .catch((error) => {
         console.error("Axios Error:", error);
@@ -108,7 +100,7 @@ class AllTrains extends Component {
                 <td>{post.remainingSeats}</td>
                 <td>
                       <div className="button-container">
-                        <Link to={`/ViewTrain/${post.id}`} className="btn btn-info">
+                        <Link to={`/trains/${post.id}`} className="btn btn-info">
                           <i className="fas fa-eye"></i>&nbsp;View
                         </Link>
                         <button className="btn btn-danger" onClick={() => this.onDelete(post.id)}>

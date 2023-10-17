@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import TrainList from "./TrainList"; 
+import TrainList from "./TrainList";
 
 class SearchTrain extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class SearchTrain extends Component {
       destination: "",
       date: "",
       seatCount: "",
-      trains: [], 
+      trains: [],
     };
   }
 
@@ -21,8 +21,24 @@ class SearchTrain extends Component {
     });
   };
 
+  formatTimeTo12Hour = (time24) => {
+    const [hours, minutes] = time24.split(":");
+    let period = "am";
+
+    let hours12 = parseInt(hours, 10);
+    if (hours12 >= 12) {
+      period = "pm";
+      if (hours12 > 12) {
+        hours12 -= 12;
+      }
+    }
+
+    return `${hours12}:${minutes} ${period}`;
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
+    console.log("Search button clicked!");
 
     const { startLocation, destination, date, seatCount } = this.state;
 
@@ -31,9 +47,11 @@ class SearchTrain extends Component {
         `/api/trains/search?fromStationName=${startLocation}&toStationName=${destination}&date=${date}&minAvailableSeatCount=${seatCount}`
       )
       .then((res) => {
-        if (res.data.success) {
-          this.setState({ trains: res.data.trains });
-        }
+        console.log("Response:", res.data);
+        this.setState({ trains: res.data });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
 
@@ -55,94 +73,140 @@ class SearchTrain extends Component {
     ];
     return (
       <div className="container">
-        <br />
         <div className="row">
-          <div className="col-md-6 offset-md-3"> {/* Center the form within the container */}
-            <h1 className="text-center topic1 text1">Search Trains</h1>
-          <form className="form" noValidate onSubmit={this.onSubmit}>
-              <div className="form-group" style={{ marginBottom: "15px" }}>
-              <label style={{ marginBottom: "5px" }}>From: </label>
-                <select
-                  className="form-control"
-                  name="startLocation"
-                  value={this.state.startLocation}
-                  onChange={this.handleInputChange}
-                >
-                  <option value="">Select a location</option>
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group" style={{ marginBottom: "15px" }}>
-                <label style={{ marginBottom: "5px" }}>To: </label>
-                <select
-                  className="form-control"
-                  name="destination"
-                  value={this.state.destination}
-                  onChange={this.handleInputChange}
-                >
-                  <option value="">Select a location</option>
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group" style={{ marginBottom: "15px" }}>
-                <label style={{ marginBottom: "5px" }}>Date: </label>
-                <input
-                  type="date"
-                  className="form-control"
-                  name="date"
-                  placeholder="Date"
-                  value={this.state.date}
-                  onChange={this.handleInputChange}
-                  required
-                />
-              </div>
-
-
-              <div className="form-group" style={{ marginBottom: "15px" }}>
-                <label style={{ marginBottom: "5px" }}>Seat Count: </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="seatCount"
-                  placeholder="Seat Count"
-                  value={this.state.seatCount}
-                  onChange={this.handleInputChange}
-                  required
-                />
-              </div>
-
-              <button
-                className="btn btn-primary btn-lg"
-                type="submit"
-                onClick={this.onSubmit}
-                style={{
-                  marginTop: "15px",
-                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                  borderRadius: "5px",
-                  fontWeight: "bold",
-                  padding: "10px 20px",
-                }}
-              >
-                Search
-              </button>
-              <br /><br />
-            </form>
+          <div className="col-md-6">
+            <div className="col-md-6">
+              <img
+                src="https://img.freepik.com/premium-vector/concept-reservation_118813-14009.jpg?w=2000"
+                alt="Item Image"
+                className="img-fluid"
+                style={{ maxWidth: "550px", height: "550px" }}
+              />
+            </div>
           </div>
-                <TrainList trains={this.state.trains} />
+          <div className="col-md-6">
+            <div
+              className="card"
+              style={{ marginTop: "20px", width: "105%", marginBottom: "30px" }}
+            >
+              <div className="card-body">
+                <h1 className="text-center">Search Trains</h1>
+                <form className="form" noValidate onSubmit={this.onSubmit}>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>From: </label>
+                    <select
+                      className="form-control"
+                      name="startLocation"
+                      value={this.state.startLocation}
+                      onChange={this.handleInputChange}
+                    >
+                      <option value="">Select a location</option>
+                      {locations.map((location) => (
+                        <option key={location} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>To: </label>
+                    <select
+                      className="form-control"
+                      name="destination"
+                      value={this.state.destination}
+                      onChange={this.handleInputChange}
+                    >
+                      <option value="">Select a location</option>
+                      {locations.map((location) => (
+                        <option key={location} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Date: </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      name="date"
+                      placeholder="Date"
+                      value={this.state.date}
+                      onChange={this.handleInputChange}
+                      required
+                      min={new Date().toISOString().split("T")[0]}
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Seat Count: </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="seatCount"
+                      placeholder="Seat Count"
+                      value={this.state.seatCount}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </div>
+                  <button
+                    className="btn btn-primary btn-lg"
+                    type="submit"
+                    style={{
+                      marginTop: "15px",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                      borderRadius: "5px",
+                      fontWeight: "bold",
+                      padding: "10px 20px",
+                    }}
+                  >
+                    Search
+                  </button>
+                  <br />
+                  <br />
+                </form>
+              </div>
+            </div>
+
+            {this.state.trains && this.state.trains.length > 0 && (
+              <div className="available-trains">
+                <h2 className="text-center topic2 text2">Available Trains</h2>
+                <br />
+                {this.state.trains.map((train, index) => (
+                  <div key={index} className="custom-card card">
+                    <div className="card-body">
+                      <h5 className="card-title">{train.name}</h5>
+                      <p className="card-text">From: {train.startLocation}</p>
+                      <p className="card-text">To: {train.destination}</p>
+                      <p className="card-text">Class: {train.trainClass}</p>
+                      <p className="card-text">
+                        Ticket Price: {train.ticketPrice}
+                      </p>
+                      <p className="card-text">
+                        Available Seats: {train.availableSeats}
+                      </p>
+                      <p className="card-text">
+                        Departure Time:{" "}
+                        {this.formatTimeTo12Hour(
+                          train.startLocationDepartureTime
+                        )}
+                      </p>
+                      <button className="btn btn-primary float-right">
+                        Reserve
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <br />
+                <br />
+              </div>
+            )}
+          </div>
         </div>
       </div>
-     
-      
     );
   }
 }

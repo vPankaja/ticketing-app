@@ -1,0 +1,32 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  
+  /* SearchTrain.css (Create this file if it doesn't exist) */
+.custom-card {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    transition: transform 0.2s;
+  }
+  
+  .custom-card:hover {
+    transform: scale(1.02);
+  }
+  

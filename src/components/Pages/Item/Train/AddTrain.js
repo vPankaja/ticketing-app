@@ -16,41 +16,42 @@ export default class AddTrainReservation extends Component {
       seatCount: 0,
       remainingSeats: 0,
       isActive: 0,
-      stoppingStations: [
-        {
-          stationName: "",
-          stationCount: 0,
-          arrivalTime: "",
-          departureTime: "",
-        },
-      ],
+      stoppingStations: [], // Array to store stopping stations
+      stationNameInput: "", // Input for station name
+      arrivalTimeInput: "", // Input for arrival time
+      departureTimeInput: "", // Input for departure time
     };
   }
 
   addStoppingStation = () => {
-    const currentStationCount = this.state.stoppingStations.length;
+    const {
+      stationNameInput,
+      arrivalTimeInput,
+      departureTimeInput,
+      stoppingStations,
+    } = this.state;
 
-    // Add a new station with an incremented station count
-    this.setState((prevState) => ({
-      stoppingStations: [
-        ...prevState.stoppingStations,
-        {
-          stationName: "",
-          stationCount: currentStationCount,
-          arrivalTime: "",
-          departureTime: "",
-        },
-      ],
-    }));
+    if (stationNameInput && arrivalTimeInput && departureTimeInput) {
+      this.setState((prevState) => ({
+        stoppingStations: [
+          ...prevState.stoppingStations,
+          {
+            stationName: stationNameInput.trim(),
+            arrivalTime: arrivalTimeInput.trim(),
+            departureTime: departureTimeInput.trim(),
+          },
+        ],
+        stationNameInput: "", // Clear the input field for station name
+        arrivalTimeInput: "", // Clear the input field for arrival time
+        departureTimeInput: "", // Clear the input field for departure time
+      }));
+    }
   };
 
   removeStoppingStation = (index) => {
-    this.setState((prevState) => ({
-      stoppingStations: [
-        ...prevState.stoppingStations.slice(0, index),
-        ...prevState.stoppingStations.slice(index + 1),
-      ],
-    }));
+    const updatedStoppingStations = [...this.state.stoppingStations];
+    updatedStoppingStations.splice(index, 1);
+    this.setState({ stoppingStations: updatedStoppingStations });
   };
 
   handleInputChange = (e) => {
@@ -111,51 +112,30 @@ export default class AddTrainReservation extends Component {
       axios
         .post("/api/trains/add", data)
         .then((res) => {
-          console.log("Response from POST request:", res); // Add this line
+          console.log("Response from POST request:", res);
 
-          if (res.data.success) {
-            this.setState({
-              name: "",
-              date: "",
-              startTime: "",
-              startLocation: "",
-              destination: "",
-              trainclass: "",
-              seatCount: 0,
-              remainingSeats: 0,
-              isActive: 0,
-              stoppingStations: [
-                {
-                  stationName: "",
-                  stationCount: 0,
-                  arrivalTime: "",
-                  departureTime: "",
-                },
-              ],
-            });
+          this.setState({
+            name: "",
+            date: "",
+            startTime: "",
+            startLocation: "",
+            destination: "",
+            trainclass: "",
+            seatCount: 0,
+            remainingSeats: 0,
+            isActive: 0,
+            stoppingStations: [],
+            stationNameInput: "",
+            arrivalTimeInput: "",
+            departureTimeInput: "",
+          });
 
-            // Use SweetAlert to show a success message
-            swal
-              .fire({
-                icon: "success",
-                title: "Success",
-                text: "Train Added Successful",
-              })
-              .then(() => {
-                // Redirect to the "/alltrains" page
-                window.location.href = "/alltrains";
-              });
-          }
+          swal("Success", "Train Added Successfully", "success");
+
+          window.location.href = "/alltrains";
         })
         .catch((error) => {
-          console.log("Error in POST request:", error); // Add this line
-
-          // Use SweetAlert to show an error message
-          swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "An error occurred.",
-          });
+          swal("Error", "An error occurred.", "error");
         });
     }
   };
@@ -181,9 +161,9 @@ export default class AddTrainReservation extends Component {
       !destination ||
       !trainclass ||
       !seatCount ||
-      !stoppingStations
+      stoppingStations.length === 0
     ) {
-      swal.fire("Validation Error", "All fields are required.", "error");
+      swal("Validation Error", "All fields are required.", "error");
       return false;
     }
 
@@ -223,296 +203,243 @@ export default class AddTrainReservation extends Component {
       "Bambalapitiya",
       "Colombo Fort",
     ];
-
     return (
-      <div>
-        <div className="container1 form1">
-          <div className="row">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
             <div className="col-md-6">
               <img
                 src={train}
-                alt="Train Image"
+                alt="Item Image"
                 className="img-fluid"
-                style={{ height: "80%" }}
+                style={{ maxWidth: "550px", height: "550px" }}
               />
             </div>
-
-            <div className="col-md-6">
-              <div className="card1" style={{ width: "85%" }}>
-                <div className="card-body">
-                  <div className="col-md-8 mt-4 mx-auto">
-                    <h1 className="text-center topic1 text1">Add Trains</h1>
-                    <form className="needs-validation form" noValidate>
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>
-                          Train Name:{" "}
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
+          </div>
+          <div className="col-md-6">
+            <div
+              className="card"
+              style={{ marginTop: "20px", width: "105%", marginBottom: "30px" }}
+            >
+              <div className="card-body">
+                <h1 className="text-center topic1 text1">Add Trains</h1>
+                <form className="needs-validation form" noValidate>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Train Name: </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="form-control"
+                      name="name"
+                      placeholder="Train Name"
+                      value={this.state.name}
+                      style={{ width: "100%" }}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Date: </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      name="date"
+                      placeholder="Date"
+                      value={this.state.date}
+                      onChange={this.handleInputChange}
+                      required
+                      min={new Date().toISOString().split("T")[0]}
+                    />
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Start Time: </label>
+                    <input
+                      type="time"
+                      className="form-control"
+                      name="startTime"
+                      value={this.state.startTime}
+                      style={{ width: "100%" }}
+                      onChange={(e) =>
+                        this.handleTimeInputChange(e, 0, "startTime")
+                      }
+                      required
+                      step="1800"
+                    />
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>
+                      Start Location:
+                    </label>
+                    <select
+                      className="form-control"
+                      name="startLocation"
+                      value={this.state.startLocation}
+                      onChange={this.handleInputChange}
+                      required
+                    >
+                      <option value="">Select Start Location</option>
+                      {locations.map((location, index) => (
+                        <option key={index} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Destination:</label>
+                    <select
+                      className="form-control"
+                      name="destination"
+                      value={this.state.destination}
+                      onChange={this.handleInputChange}
+                      required
+                    >
+                      <option value="">Select Destination</option>
+                      {locations.map((location, index) => (
+                        <option key={index} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Train Class: </label>
+                    <select
+                      id="trainclass"
+                      className="form-control"
+                      name="trainclass"
+                      value={this.state.trainclass}
+                      style={{ width: "100%" }}
+                      onChange={this.handleInputChange}
+                      required
+                    >
+                      <option value="">Select Train Class</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                    </select>
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>Seat Count: </label>
+                    <input
+                      type="number"
+                      id="seatCount"
+                      className="form-control"
+                      name="seatCount"
+                      placeholder="Seat Count"
+                      value={this.state.seatCount}
+                      style={{ width: "100%" }}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group" style={{ marginBottom: "15px" }}>
+                    <label style={{ marginBottom: "5px" }}>
+                      Stopping Station (Format: Station Name, Arrival Time,
+                      Departure Time):
+                    </label>
+                    <div className="row">
+                      <div className="col-4">
+                        <select
                           className="form-control"
-                          name="name"
-                          placeholder="Train Name"
-                          value={this.state.name}
-                          style={{ width: "100%" }}
+                          name="stationNameInput"
+                          value={this.state.stationNameInput}
                           onChange={this.handleInputChange}
                           required
-                        />
+                        >
+                          <option value="">Select Station Name</option>
+                          {stationNames.map((stationName, stationIndex) => (
+                            <option key={stationIndex} value={stationName}>
+                              {stationName}
+                            </option>
+                          ))}
+                        </select>
                       </div>
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>Date: </label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          name="date"
-                          placeholder="Date"
-                          value={this.state.date}
-                          onChange={this.handleInputChange}
-                          required
-                        />
-                      </div>
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>
-                          Start Time:{" "}
-                        </label>
+                      <div className="col-4">
                         <input
                           type="time"
                           className="form-control"
-                          name="startTime"
-                          value={this.state.startTime}
-                          style={{ width: "100%" }}
-                          onChange={(e) =>
-                            this.handleTimeInputChange(e, 0, "startTime")
-                          }
-                          required
-                          step="1800"
+                          name="arrivalTimeInput"
+                          value={this.state.arrivalTimeInput}
+                          onChange={this.handleInputChange}
+                          placeholder="Arrival Time"
                         />
                       </div>
-
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>
-                          Start Location:
-                        </label>
-                        <select
-                          className="form-control"
-                          name="startLocation"
-                          value={this.state.startLocation}
-                          onChange={this.handleInputChange}
-                          required
-                        >
-                          <option value="">Select Start Location</option>
-                          {locations.map((location, index) => (
-                            <option key={index} value={location}>
-                              {location}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>
-                          Destination:
-                        </label>
-                        <select
-                          className="form-control"
-                          name="destination"
-                          value={this.state.destination}
-                          onChange={this.handleInputChange}
-                          required
-                        >
-                          <option value="">Select Destination</option>
-                          {locations.map((location, index) => (
-                            <option key={index} value={location}>
-                              {location}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>
-                          Train Class:{" "}
-                        </label>
-                        <select
-                          id="trainclass"
-                          className="form-control"
-                          name="trainclass"
-                          value={this.state.trainclass}
-                          style={{ width: "100%" }}
-                          onChange={this.handleInputChange}
-                          required
-                        >
-                          <option value="">Select Train Class</option>
-                          <option value="A">A</option>
-                          <option value="B">B</option>
-                          <option value="C">C</option>
-                        </select>
-                      </div>
-
-                      <div
-                        className="form-group"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <label style={{ marginBottom: "5px" }}>
-                          Seat Count:{" "}
-                        </label>
+                      <div className="col-4">
                         <input
-                          type="number"
-                          id="seatCount"
+                          type="time"
                           className="form-control"
-                          name="seatCount"
-                          placeholder="Seat Count"
-                          value={this.state.seatCount}
-                          style={{ width: "100%" }}
+                          name="departureTimeInput"
+                          value={this.state.departureTimeInput}
                           onChange={this.handleInputChange}
-                          required
+                          placeholder="Departure Time"
                         />
                       </div>
+                      <div
+                        className="col-4"
+                        style={{ marginTop: "10px", marginLeft: "350px" }}
+                      >
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={this.addStoppingStation}
+                          style={{ width: "100%" }}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
-                      {/* Stopping Stations */}
+                  <br />
+                  <br />
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Station Name</th>
+                        <th>Arrival Time</th>
+                        <th>Departure Time</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                       {this.state.stoppingStations.map((station, index) => (
-                        <div key={index}>
-                          <h2>Stopping Station {station.stationCount + 1}</h2>
-                          <div
-                            className="form-group"
-                            style={{ marginBottom: "15px" }}
-                          >
-                            <label style={{ marginBottom: "5px" }}>
-                              Station Name:
-                            </label>
-                            <select
-                              className="form-control"
-                              name="stationName"
-                              value={
-                                this.state.stoppingStations[index].stationName
-                              }
-                              onChange={(e) =>
-                                this.handleTimeInputChange(
-                                  e,
-                                  index,
-                                  "stationName"
-                                )
-                              }
-                              required
-                            >
-                              <option value="">Select Station Name</option>
-                              {stationNames.map((stationName, stationIndex) => (
-                                <option key={stationIndex} value={stationName}>
-                                  {stationName}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-
-                          <div
-                            className="form-group"
-                            style={{ marginBottom: "15px" }}
-                          >
-                            <label style={{ marginBottom: "5px" }}>
-                              Arrival Time:{" "}
-                            </label>
-                            <input
-                              type="time"
-                              className="form-control"
-                              name="arrivalTime"
-                              value={station.arrivalTime}
-                              style={{ width: "100%" }}
-                              onChange={(e) =>
-                                this.handleTimeInputChange(
-                                  e,
-                                  index,
-                                  "arrivalTime"
-                                )
-                              }
-                              required
-                              step="1800"
-                            />
-                          </div>
-                          <div
-                            className="form-group"
-                            style={{ marginBottom: "15px" }}
-                          >
-                            <label style={{ marginBottom: "5px" }}>
-                              Departure Time:{" "}
-                            </label>
-                            <input
-                              type="time"
-                              className="form-control"
-                              name="departureTime"
-                              value={station.departureTime}
-                              style={{ width: "100%" }}
-                              onChange={(e) =>
-                                this.handleTimeInputChange(
-                                  e,
-                                  index,
-                                  "departureTime"
-                                )
-                              }
-                              required
-                              step="1800"
-                            />
-                          </div>
-
-                          {index !== 0 && (
+                        <tr key={index}>
+                          <td>{station.stationName}</td>
+                          <td>{station.arrivalTime}</td>
+                          <td>{station.departureTime}</td>
+                          <td>
                             <button
-                              type="button"
                               className="btn btn-danger"
                               onClick={() => this.removeStoppingStation(index)}
                             >
-                              Remove Station
+                              Remove
                             </button>
-                          )}
-                        </div>
+                          </td>
+                        </tr>
                       ))}
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={this.addStoppingStation}
-                      >
-                        Add Station
-                      </button>
-                      <br />
-                      <br />
-                      <button
-                        className="btn btn-primary btn-lg"
-                        type="submit"
-                        href="/allTrains"
-                        onClick={this.onSubmit}
-                        style={{
-                          marginTop: "15px",
-                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                          borderRadius: "5px",
-                          fontWeight: "bold",
-                          padding: "10px 20px",
-                        }}
-                      >
-                        Submit
-                      </button>
-                    </form>
-                  </div>
-                </div>
+                    </tbody>
+                  </table>
+                  <button
+                    className="btn btn-primary btn-lg"
+                    type="submit"
+                    href="/allTrains"
+                    onClick={this.onSubmit}
+                    style={{
+                      marginTop: "15px",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                      borderRadius: "5px",
+                      fontWeight: "bold",
+                      padding: "10px 20px",
+                    }}
+                  >
+                    Submit
+                  </button>
+                </form>
               </div>
             </div>
           </div>
         </div>
-        <br />
-        <br />
       </div>
     );
   }
