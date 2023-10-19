@@ -22,7 +22,13 @@ function ReserveTrain() {
 
 
   const handleNICChange = (e) => {
-    setFormData({ ...formData, nic: e.target.value });
+    const inputValue = e.target.value;
+
+    if (/^[0-9a-zA-Z]*$/.test(inputValue)) {
+      setFormData({ ...formData, nic: inputValue });
+    } else {
+      swal("Error", "NIC must contain only numbers and letters", "error");
+    }
   };
 
   useEffect(() => {
@@ -57,7 +63,17 @@ function ReserveTrain() {
         swal("Success", "Reservation Successful", "success");
       })
       .catch((error) => {
-        swal("Error", "Reservation creation failed", "error");
+        const reservationDate = new Date(formData.reservationDate);
+        const bookingDate = new Date(formData.bookingDate);
+
+        const DateDiff = (reservationDate - bookingDate) / (1000 * 60 * 60 * 24);
+        
+        if(DateDiff >= 30){
+          swal("Error", "The reservation date is equal to or longer than 30 days", "error");
+        }else{
+          swal("Error", "Failed to create reservation : This NIC number already has 4 reservations", "error");
+        }
+        
       });
 
     } else {
