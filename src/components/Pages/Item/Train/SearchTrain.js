@@ -16,7 +16,13 @@ class SearchTrain extends Component {
   }
 
   handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const name = e.target.name;
+    let value = e.target.value;
+  
+    if (name === "seatCount" && !/^\d+$/.test(value)) {
+      value = "";
+    }
+  
     this.setState({
       [name]: value,
     });
