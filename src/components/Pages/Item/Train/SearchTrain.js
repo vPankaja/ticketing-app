@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-import TrainList from "./TrainList";
+import swal from "sweetalert";
+import { Link } from "react-router-dom";
 
 class SearchTrain extends Component {
   constructor(props) {
@@ -36,8 +37,23 @@ class SearchTrain extends Component {
     return `${hours12}:${minutes} ${period}`;
   };
 
+  validateForm = () => {
+    const { startLocation, destination, date, seatCount } = this.state;
+
+    if (!startLocation || !destination || !date || !seatCount) {
+      swal("Validation Error", "All fields are required.", "error");
+      return false;
+    }
+
+    return true;
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
+
+    if (!this.validateForm()) {
+      return;
+    }
     console.log("Search button clicked!");
 
     const { startLocation, destination, date, seatCount } = this.state;
@@ -52,6 +68,7 @@ class SearchTrain extends Component {
       })
       .catch((error) => {
         console.error("Error:", error);
+        swal("Error", "Sorry no trains available for this day", "error");
       });
   };
 
@@ -181,6 +198,12 @@ class SearchTrain extends Component {
                       <h5 className="card-title">{train.name}</h5>
                       <p className="card-text">From: {train.startLocation}</p>
                       <p className="card-text">To: {train.destination}</p>
+                      <p className="card-text">
+                        Departure Time:{" "}
+                        {this.formatTimeTo12Hour(
+                          train.startLocationDepartureTime
+                        )}
+                      </p>
                       <p className="card-text">Class: {train.trainClass}</p>
                       <p className="card-text">
                         Ticket Price: {train.ticketPrice}
@@ -188,15 +211,17 @@ class SearchTrain extends Component {
                       <p className="card-text">
                         Available Seats: {train.availableSeats}
                       </p>
-                      <p className="card-text">
-                        Departure Time:{" "}
-                        {this.formatTimeTo12Hour(
-                          train.startLocationDepartureTime
-                        )}
-                      </p>
-                      <button className="btn btn-primary float-right">
-                        Reserve
-                      </button>
+
+                      <div className="button-container">
+                        <Link
+                          to={{
+                            pathname: "/reservetrain",
+                          }}
+                          state={{ trainData: train }}
+                        >
+                          Reserve Train
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}

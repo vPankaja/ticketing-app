@@ -14,19 +14,26 @@ function Header() {
           borderRadius: '50%',
         }}
       />
-      <div className="head2" >
-        <FaSignInAlt  className="head1  "/>
-        <FaUser  className="head1"/>
+      <div className="head2">
+        <FaSignInAlt className="head1" />
+        <FaUser className="head1" />
       </div>
       <nav className="nav">
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/addreservation">Reservation</a></li>
           <li><a href="/searchTrain">Search Train</a></li>
-          <li><a href="/allTrains">Train Management</a></li>
+          <li className="dropdownT">
+            <a href="#" className="dropbtn">Train Management</a>
+            <div className="dropdown-contentT">
+              <a href="/addTrain">Add Train</a><br />
+              <a href="/allTrains">All Trains</a><br />
+              <a href="/trainHistory">Train History</a>
+            </div>
+          </li>
           <li><a href="#">About</a></li>
-          <li><a href="#">Services</a></li>
           <li><a href="#">Contact</a></li>
+          
         </ul>
       </nav>
     </header>

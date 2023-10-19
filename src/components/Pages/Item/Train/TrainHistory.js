@@ -5,7 +5,7 @@ import "./Train.css";
 import { Link } from "react-router-dom";
 import loadingGif from "../../../images/loading.gif";
 
-class AllTrains extends Component {
+class TrainHistory extends Component {
   constructor(props) {
     super(props);
 
@@ -21,7 +21,7 @@ class AllTrains extends Component {
 
   retrievePosts() {
     axios
-      .get("/api/trains/getall")
+      .get("/api/trains/history/getall")
       .then((res) => {
         console.log(res.data);
 
@@ -64,12 +64,8 @@ class AllTrains extends Component {
       <div className="container">
         <div className="tabl">
           <br />
-          <h2 className="text1">Train Details</h2>
-          <div className="add-button">
-            <Link to="/addTrain" className="btn btn-primary">
-              Add New Train
-            </Link>
-          </div>
+          <h2 className="text1">Trains History</h2>
+          
           {this.state.loading ? (
             <div className="text-center">
               <img src={loadingGif} alt="Loading..." />
@@ -86,8 +82,8 @@ class AllTrains extends Component {
                     <th scope="col">Destination</th>
                     <th scope="col">Train Class</th>
                     <th scope="col">Seat Count</th>
-                    <th scope="col">Remaining Seats</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Reserved Seat Count</th>
+                    {/* <th scope="col">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -101,15 +97,9 @@ class AllTrains extends Component {
                       <td>{post.destination}</td>
                       <td>{post.trainClass}</td>
                       <td>{post.seatCount}</td>
-                      <td>{post.remainingSeats}</td>
-                      <td>
+                      <td>{post.seatCount - post.remainingSeats}</td>
+                      {/* <td>
                         <div className="button-container">
-                          <Link
-                            to={`/trains/${post.id}`}
-                            className="btn btn-info"
-                          >
-                            <i className="fas fa-eye"></i>&nbsp;View
-                          </Link>
                           <button
                             className="btn btn-danger"
                             onClick={() => this.onDelete(post.id)}
@@ -118,7 +108,7 @@ class AllTrains extends Component {
                             &nbsp;Delete
                           </button>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -131,4 +121,4 @@ class AllTrains extends Component {
   }
 }
 
-export default AllTrains;
+export default TrainHistory;
