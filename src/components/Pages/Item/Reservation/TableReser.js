@@ -53,10 +53,10 @@ class TableReser extends Component {
             <table className="table table-striped table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col">Traveler ID</th>
+                  <th scope="col">Traveler NIC</th>
                   <th scope="col">Reservation Date</th>
                   <th scope="col">Booking Date</th>
-                  <th scope="col">Train ID</th>
+                  <th scope="col">Train Name</th>
                   <th scope="col">Start Location</th>
                   <th scope="col">Destination</th>
                   <th scope="col">Train Class</th>
@@ -70,10 +70,10 @@ class TableReser extends Component {
               <tbody>
                 {this.state.posts.map((post, index) => (
                   <tr key={index}>
-                    <td>{post.travelerID}</td>
+                    <td>{post.nic}</td>
                     <td>{post.reservationDate}</td>
                     <td>{post.bookingDate}</td>
-                    <td>{post.trainID}</td>
+                    <td>{post.trainName}</td>
                     <td>{post.startLocation}</td>
                     <td>{post.destination}</td>
                     <td>{post.trainClass}</td>
@@ -81,7 +81,7 @@ class TableReser extends Component {
                     <td>{post.price}</td>
                     <td>{post.seatCount}</td>
                     <td>
-                      {post.status === 1 ? 'Reserved' : (post.status === 0 ? 'Available' : 'Invalid Status')}
+                      {post.status === "1" ? 'Confirmed' : (post.status === "0" ? 'Pending' : 'Invalid Status')}
                     </td>
 
 

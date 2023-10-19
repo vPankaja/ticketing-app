@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import train from "../../../images/train.png";
-import { Link  } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default class AddTrainReservation extends Component {
   constructor(props) {
@@ -17,10 +17,10 @@ export default class AddTrainReservation extends Component {
       seatCount: 0,
       remainingSeats: 0,
       isActive: 0,
-      stoppingStations: [], // Array to store stopping stations
-      stationNameInput: "", // Input for station name
-      arrivalTimeInput: "", // Input for arrival time
-      departureTimeInput: "", // Input for departure time
+      stoppingStations: [],
+      stationNameInput: "",
+      arrivalTimeInput: "",
+      departureTimeInput: "",
     };
   }
 
@@ -42,9 +42,9 @@ export default class AddTrainReservation extends Component {
             departureTime: departureTimeInput.trim(),
           },
         ],
-        stationNameInput: "", // Clear the input field for station name
-        arrivalTimeInput: "", // Clear the input field for arrival time
-        departureTimeInput: "", // Clear the input field for departure time
+        stationNameInput: "",
+        arrivalTimeInput: "",
+        departureTimeInput: "",
       }));
     }
   };
@@ -141,7 +141,7 @@ export default class AddTrainReservation extends Component {
     }
   };
 
-  // Validation function
+  
   validateForm = () => {
     const {
       name,
@@ -168,7 +168,6 @@ export default class AddTrainReservation extends Component {
       return false;
     }
 
-    // Add more specific validation rules here
     return true;
   };
 
@@ -206,12 +205,16 @@ export default class AddTrainReservation extends Component {
     ];
     return (
       <div className="container">
-                    <br />
-      <div className="back-button-container">
-        <Link to="#" onClick={() => window.history.back()} className="back-button">
-          &lt; Back
-        </Link>
-      </div>
+        <br />
+        <div className="back-button-container">
+          <Link
+            to="#"
+            onClick={() => window.history.back()}
+            className="back-button"
+          >
+            &lt; Back
+          </Link>
+        </div>
         <div className="row">
           <div className="col-md-6">
             <div className="col-md-6">
@@ -399,9 +402,11 @@ export default class AddTrainReservation extends Component {
                   </div>
 
                   <br />
-                  <br /><div style={{ marginBottom: "15px", fontSize: "14px" }}>
-  (Please add the stations in the order of the train route, also add start station and destination)
-</div>
+                  <br />
+                  <div style={{ marginBottom: "15px", fontSize: "14px" }}>
+                    (Please add the stations in the order of the train route,
+                    also add start station and destination)
+                  </div>
                   <table className="table">
                     <thead>
                       <tr>

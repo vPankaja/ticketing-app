@@ -45,3 +45,22 @@
 .head2{
   margin-right: 700px;
 }
+
+.dropdownT {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-contentT {
+  display: none;
+  position: absolute;
+  background-color: #8A9A5B;
+  min-width: 100px;
+  z-index: 1;
+  left: 0; 
+  top: 100%; 
+}
+
+.dropdownT:hover .dropdown-contentT {
+  display: block;
+}

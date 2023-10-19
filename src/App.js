@@ -15,8 +15,10 @@ import UsersTable from './components/Pages/Item/Users/Userstables';
 import AdminDashboard from './components/Pages/Item/Admin/AdminDashboard';
 import ViewTrain from './components/Pages/Item/Train/ViewTrain';
 import SearchTrain from './components/Pages/Item/Train/SearchTrain';
-import TrainList from './components/Pages/Item/Train/TrainList';
 import UpdateTrainReservation from './components/Pages/Item/Train/UpdateTrain';
+import TrainHistory from './components/Pages/Item/Train/TrainHistory';
+import ReservationHistory from './components/Pages/Item/Reservation/ReservationHistory';
+import ReserveTrain from './components/Pages/Item/Reservation/ReserveTrain';
 
 const App = () => {
   return (
@@ -31,8 +33,8 @@ const App = () => {
             {/* Train */}
             <Route path="/addtrain" element={<AddTrain />} />
             <Route path="/alltrains" element={<AllTrains />} />
+            <Route path="/trainhistory" element={<TrainHistory />} />
             <Route path="/trains/:id" element={<ViewTrain />} />
-            <Route path="/trainlist" element={<TrainList />} />
             <Route path="/searchtrain" element={<SearchTrain />} />
             <Route path="/updatetrain/:id" element={<UpdateTrainReservation />} />
 
@@ -42,6 +44,9 @@ const App = () => {
             <Route path="/addreservation" element={<AddReservation />} />
             <Route path="/editreservation" element={<EditReservation />} />
             <Route path="/tablereser" element={<TableReser />} />
+            <Route path="/reservarionhistory" element={<ReservationHistory />} />
+            <Route path="/reservetrain" element={<ReserveTrain/>} />
+
 
             {/* User */}
             <Route path="/tableuser" element={<UsersTable />} />
