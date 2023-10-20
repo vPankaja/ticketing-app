@@ -16,8 +16,7 @@
     font-size: 16px;
   }
   
-  /* SearchTrain.css (Create this file if it doesn't exist) */
-.custom-card {
+  .custom-card {
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -29,4 +28,3 @@
   .custom-card:hover {
     transform: scale(1.02);
   }
-  

@@ -1,66 +1,10 @@
-/* Header Container */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #a5bb8c; /* Header background color */
-  padding: 10px 20px;
-  color: white; /* Header text color */
-}
-
-/* Logo */
-.logo {
-  font-size: 24px;
+.site-name {
   font-weight: bold;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 24px;
+  color: #ffff;
+  -webkit-text-stroke: 1px #303030;
 }
 
-/* Navigation */
-.nav ul {
-  list-style: none;
-  display: flex;
-}
-
-.nav li {
-  margin-left: 20px;
-}
-
-.nav a {
-  text-decoration: none;
-  color: white;
-  transition: color 0.3s ease;
-}
-
-.nav a:hover {
-  color: #FF5733; /* Hover color for navigation links */
-}
-
-.head1{
-  
-  width: 90px;
-  height: 40px;
-  
-}
-
-.head2{
-  margin-right: 700px;
-}
-
-.dropdownT {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-contentT {
-  display: none;
-  position: absolute;
-  background-color: #8A9A5B;
-  min-width: 100px;
-  z-index: 1;
-  left: 0; 
-  top: 100%; 
-}
-
-.dropdownT:hover .dropdown-contentT {
-  display: block;
+.custom-navbar {
+  background-color: #fece2f;
 }
