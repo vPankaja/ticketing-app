@@ -76,6 +76,11 @@ function Header() {
           </li>
           <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
             <Link className="nav-link" to="#">
+              Traveler Management
+            </Link>
+          </li>
+          <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
+            <Link className="nav-link" to="#">
               User Management
             </Link>
           </li>
