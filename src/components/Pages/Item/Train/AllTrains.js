@@ -59,14 +59,16 @@ class AllTrains extends Component {
       });
   };
 
+  
+
   render() {
     return (
-      <div className="container">
-        <div className="tabl">
-          <br />
-          <h2 className="text1">Train Details</h2>
+      <div className="d-flex align-items-center justify-content-center h-100">
+      <div className='container card p-5 m-5'>
+      <h2 className='text-center'>Train Management</h2>
+      <div className='container'>
           <div className="add-button">
-            <Link to="/addTrain" className="btn btn-primary">
+            <Link to="/addTrain" className="btn btn-primary mb-3">
               Add New Train
             </Link>
           </div>
@@ -75,10 +77,10 @@ class AllTrains extends Component {
               <img src={loadingGif} alt="Loading..." />
             </div>
           ) : (
-            <div>
-              <table className="table table-striped table-bordered table-hover">
-                <thead className="thead-dark">
+              <table class="table bordered">
+        <thead>
                   <tr>
+                    <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Date</th>
                     <th scope="col">Start Time</th>
@@ -93,6 +95,7 @@ class AllTrains extends Component {
                 <tbody>
                   {this.state.posts.map((post, index) => (
                     <tr key={index}>
+                    <td>{index+1}</td>
                       <td style={{ display: "none" }}>{post.id}</td>
                       <td>{post.name}</td>
                       <td>{new Date(post.date).toLocaleDateString()}</td>
@@ -103,19 +106,16 @@ class AllTrains extends Component {
                       <td>{post.seatCount}</td>
                       <td>{post.remainingSeats}</td>
                       <td>
-                        <div className="button-container">
+                        <div className="d-flex align-items-center">
                           <Link
                             to={`/trains/${post.id}`}
-                            className="btn btn-info"
-                          >
-                            <i className="fas fa-eye"></i>&nbsp;View
+                            className="btn btn-outline-success mx-2"
+                          >View
                           </Link>
                           <button
-                            className="btn btn-danger"
+                            className="btn btn-outline-danger mx-2"
                             onClick={() => this.onDelete(post.id)}
-                          >
-                            <i className="fas fa-trash" href="#"></i>
-                            &nbsp;Delete
+                          >Delete
                           </button>
                         </div>
                       </td>
@@ -123,10 +123,9 @@ class AllTrains extends Component {
                   ))}
                 </tbody>
               </table>
-            </div>
           )}
         </div>
-      </div>
+      </div></div>
     );
   }
 }

@@ -61,20 +61,19 @@ class TrainHistory extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="tabl">
-          <br />
-          <h2 className="text1">Trains History</h2>
-          
+<div className="d-flex align-items-center justify-content-center h-100">
+      <div className='container card p-5 m-5'>
+      <h2 className='text-center'>Train History</h2>
+      <div className='container'>
           {this.state.loading ? (
             <div className="text-center">
               <img src={loadingGif} alt="Loading..." />
             </div>
           ) : (
             <div>
-              <table className="table table-striped table-bordered table-hover">
-                <thead className="thead-dark">
-                  <tr>
+              <table class="table bordered">
+        <thead>
+                  <tr><th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Date</th>
                     <th scope="col">Start Time</th>
@@ -88,7 +87,7 @@ class TrainHistory extends Component {
                 </thead>
                 <tbody>
                   {this.state.posts.map((post, index) => (
-                    <tr key={index}>
+                    <tr key={index}><td>{index+1}</td>
                       <td style={{ display: "none" }}>{post.id}</td>
                       <td>{post.name}</td>
                       <td>{new Date(post.date).toLocaleDateString()}</td>
@@ -116,7 +115,7 @@ class TrainHistory extends Component {
             </div>
           )}
         </div>
-      </div>
+      </div></div>
     );
   }
 }

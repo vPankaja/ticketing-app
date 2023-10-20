@@ -97,6 +97,7 @@ function ViewTrain() {
                     <table className="table">
                       <thead>
                         <tr>
+                        <th scope="col">#</th>
                           <th>Station Name</th>
                           <th>Arrival Time</th>
                           <th>Departure Time</th>
@@ -105,6 +106,7 @@ function ViewTrain() {
                       <tbody>
                         {trainData.stoppingStations.map((station, index) => (
                           <tr key={index}>
+                            <td>{index+1}</td>
                             <td>{station.stationName || "N/A"}</td>
                             <td>{station.arrivalTime || "N/A"}</td>
                             <td>{station.departureTime || "N/A"}</td>

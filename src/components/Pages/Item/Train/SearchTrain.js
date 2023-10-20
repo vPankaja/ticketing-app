@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import searchT from "../../../images/searchT.jpg";
 
 class SearchTrain extends Component {
   constructor(props) {
@@ -18,11 +19,11 @@ class SearchTrain extends Component {
   handleInputChange = (e) => {
     const name = e.target.name;
     let value = e.target.value;
-  
+
     if (name === "seatCount" && !/^\d+$/.test(value)) {
       value = "";
     }
-  
+
     this.setState({
       [name]: value,
     });
@@ -48,6 +49,11 @@ class SearchTrain extends Component {
 
     if (!startLocation || !destination || !date || !seatCount) {
       swal("Validation Error", "All fields are required.", "error");
+      return false;
+    }
+
+    if (startLocation === destination) {
+      swal("Validation Error", "Start location and destination cannot be the same.", "error");
       return false;
     }
 
@@ -100,10 +106,10 @@ class SearchTrain extends Component {
           <div className="col-md-6">
             <div className="col-md-6">
               <img
-                src="https://img.freepik.com/premium-vector/concept-reservation_118813-14009.jpg?w=2000"
+                src={searchT}
                 alt="Item Image"
                 className="img-fluid"
-                style={{ maxWidth: "550px", height: "550px" }}
+                style={{ maxWidth: "600px", height: "500px" }}
               />
             </div>
           </div>
@@ -175,20 +181,11 @@ class SearchTrain extends Component {
                       required
                     />
                   </div>
-                  <button
-                    className="btn btn-primary btn-lg"
-                    type="submit"
-                    style={{
-                      marginTop: "15px",
-                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-                      borderRadius: "5px",
-                      fontWeight: "bold",
-                      padding: "10px 20px",
-                    }}
-                  >
-                    Search
-                  </button>
                   <br />
+                  <div className="d-flex justify-content-center">
+                    <button className="btn btn-primary btn-sm">Search</button>
+                  </div>
+
                   <br />
                 </form>
               </div>
@@ -200,26 +197,51 @@ class SearchTrain extends Component {
                 <br />
                 {this.state.trains.map((train, index) => (
                   <div key={index} className="custom-card card">
+                    <div className="card-header">
+                      <div className="row">
+                        <div className="col-6">
+                          <h5>{train.name}</h5>
+                        </div>
+                        <div className="col-6 text-end">
+                          <p className="card-text">
+                            <strong>Available Seats:</strong>
+                            {train.availableSeats}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="card-body">
-                      <h5 className="card-title">{train.name}</h5>
-                      <p className="card-text">From: {train.startLocation}</p>
-                      <p className="card-text">To: {train.destination}</p>
-                      <p className="card-text">
-                        Departure Time:{" "}
-                        {this.formatTimeTo12Hour(
-                          train.startLocationDepartureTime
-                        )}
-                      </p>
-                      <p className="card-text">Class: {train.trainClass}</p>
+                      <div class="row">
+                        <div class="col">
+                          <p className="card-text">
+                            From: {train.startLocation}
+                          </p>
+                        </div>
+                        <div class="col">
+                          <p className="card-text">To: {train.destination}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <p className="card-text">
+                            Departure Time:{" "}
+                            {this.formatTimeTo12Hour(
+                              train.startLocationDepartureTime
+                            )}
+                          </p>
+                        </div>
+                        <div class="col">
+                          <p className="card-text">Class: {train.trainClass}</p>
+                        </div>
+                      </div>
                       <p className="card-text">
                         Ticket Price: {train.ticketPrice}
                       </p>
-                      <p className="card-text">
-                        Available Seats: {train.availableSeats}
-                      </p>
 
-                      <div className="button-container">
+                      <div className="d-flex justify-content-center">
                         <Link
+                          className="btn btn-primary btn-sm"
                           to={{
                             pathname: "/reservetrain",
                           }}
