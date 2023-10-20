@@ -75,7 +75,12 @@ function Header() {
             </div>
           </li>
           <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
-            <Link className="nav-link" to="#">
+            <Link className="nav-link" to="/tablereser">
+              Reservation Management
+            </Link>
+          </li>
+          <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
+            <Link className="nav-link" to="/tableprofile">
               Traveler Management
             </Link>
           </li>
@@ -84,11 +89,7 @@ function Header() {
               User Management
             </Link>
           </li>
-          <li className="nav-item">
-            <a className="nav-link disabled" href="#">
-              Disabled
-            </a>
-          </li>
+          
         </ul>
       </div>
     </nav>

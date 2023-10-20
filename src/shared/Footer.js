@@ -24,7 +24,7 @@ function Footer() {
   </div>
 
   <div className="text-center p-3" style={style}>
-    © 2020 Copyright:
+    © 2023 Copyright:
     <a className="text-white" href="http://localhost:3000/">MakeMyTrip.com</a>
   </div>
 </footer>

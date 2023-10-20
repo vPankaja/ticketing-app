@@ -4,6 +4,11 @@ import swal from "sweetalert";
 import "./Train.css";
 import { Link } from "react-router-dom";
 import loadingGif from "../../../images/loading.gif";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 class AllTrains extends Component {
   constructor(props) {
@@ -59,26 +64,29 @@ class AllTrains extends Component {
       });
   };
 
-  
-
   render() {
     return (
       <div className="d-flex align-items-center justify-content-center h-100">
-      <div className='container card p-5 m-5'>
-      <h2 className='text-center'>Train Management</h2>
-      <div className='container'>
-          <div className="add-button">
-            <Link to="/addTrain" className="btn btn-primary mb-3">
-              Add New Train
-            </Link>
-          </div>
-          {this.state.loading ? (
-            <div className="text-center">
-              <img src={loadingGif} alt="Loading..." />
+        <div className="container card p-5 m-5">
+          <h1
+            className="text-center"
+            style={{ color: "#FF5733", fontFamily: "Baufra" }}
+          >
+            <b>Train Management</b>
+          </h1>
+          <div className="container">
+            <div className="add-button">
+              <Link to="/addTrain" className="btn btn-primary mb-3">
+                Add New Train
+              </Link>
             </div>
-          ) : (
+            {this.state.loading ? (
+              <div className="text-center">
+                <img src={loadingGif} alt="Loading..." />
+              </div>
+            ) : (
               <table class="table bordered">
-        <thead>
+                <thead>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
@@ -95,7 +103,7 @@ class AllTrains extends Component {
                 <tbody>
                   {this.state.posts.map((post, index) => (
                     <tr key={index}>
-                    <td>{index+1}</td>
+                      <td>{index + 1}</td>
                       <td style={{ display: "none" }}>{post.id}</td>
                       <td>{post.name}</td>
                       <td>{new Date(post.date).toLocaleDateString()}</td>
@@ -110,12 +118,16 @@ class AllTrains extends Component {
                           <Link
                             to={`/trains/${post.id}`}
                             className="btn btn-outline-success mx-2"
-                          >View
+                          >
+                            <FontAwesomeIcon icon={faEye} />
+                            &nbsp;View
                           </Link>
                           <button
                             className="btn btn-outline-danger mx-2"
                             onClick={() => this.onDelete(post.id)}
-                          >Delete
+                          >
+                           <FontAwesomeIcon icon={faTrashAlt} />
+                            &nbsp;Delete
                           </button>
                         </div>
                       </td>
@@ -123,9 +135,10 @@ class AllTrains extends Component {
                   ))}
                 </tbody>
               </table>
-          )}
+            )}
+          </div>
         </div>
-      </div></div>
+      </div>
     );
   }
 }

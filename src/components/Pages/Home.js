@@ -1,26 +1,19 @@
 import React from 'react';
 import './home.css';
-import cover3 from "../images/cover3.jpg";
-import { FaArrowRight } from 'react-icons/fa';
-// import { FaStar, FaHeart, FaCheck } from 'react-icons/fa'; // Import the icons
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
-
-
 
 function Home() {
   return (
     <div>
       <div className="understand">
         <img
-          src={cover3}
+          src="https://images4.alphacoders.com/150/150168.jpg"
           alt="Buy on Inventory"
           style={{
             width: '100%',
-            height: '60vh',
+            height: '70vh',
             objectFit: 'cover',
             borderRadius: '10%',
-            marginTop: '20px'
+           
           }}
         />
       </div>
@@ -37,16 +30,16 @@ function Home() {
 
 
         <div className="button-container">
-         <button type="button" className="btn btn-lg btn-primary mr-2" disabled>
-    <a href="/addreservation" style={{ textDecoration: 'none', color: 'white' }}>
-        <span className="button-text">Reservation</span>
-        <FaArrowRight />
-    </a>
-</button>
+          {/* <button type="button" className="btn btn-lg btn-primary mr-2" disabled>
+            <a href="/addreservation" style={{ textDecoration: 'none', color: 'white' }}>
+              <span className="button-text">Reservation</span>
+              <FaArrowRight />
+            </a>
+          </button> */}
 
 
-          <button type="button" class="btn btn-lg btn-primary mr-2" disabled><a href="/addbooking">  Booking  </a><FaArrowRight /></button>
-          <button type="button" class="btn btn-lg btn-primary " disabled><a href="/addreservation">  Primary button  </a><FaArrowRight /></button>
+          {/* <button type="button" class="btn btn-lg btn-primary mr-2" disabled><a href="/addbooking">  Booking  </a><FaArrowRight /></button>
+          <button type="button" class="btn btn-lg btn-primary " disabled><a href="/addreservation">  Primary button  </a><FaArrowRight /></button> */}
         </div>
 
         <div>
@@ -93,7 +86,7 @@ function Home() {
                 </div>
               </div>
 
-               <div className="col-md-6  ">
+              <div className="col-md-6  ">
                 <img
                   src="https://media.istockphoto.com/id/1334776032/vector/train-station-crowd-flat-design.jpg?s=612x612&w=0&k=20&c=gxtkOZEjX_xxf0dtxVpZOnKXZTfH3SA3KbvihnpRBjU=" // Replace with the URL of your image
                   alt="Item Image"

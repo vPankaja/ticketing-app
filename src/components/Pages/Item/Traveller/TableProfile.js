@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import swal from "sweetalert"; // Correct the import statement
+import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+  faEdit,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import loadingGif from "../../../images/loading.gif";
 
 class TableProfile extends Component {
   constructor(props) {
@@ -9,6 +17,7 @@ class TableProfile extends Component {
 
     this.state = {
       posts: [],
+      loading: true,
     };
   }
 
@@ -17,89 +26,122 @@ class TableProfile extends Component {
   }
 
   retrievePosts() {
-    axios.get("/api/travelers/getall").then((res) => {
-      console.log(res.data); // Log the response to inspect its structure
-
-      // Check if the response status is successful
-      if (res.status === 200) {
-        // Assuming the data is an array of reservations with a "destination" property
-        const reservations = res.data; // Modify this based on your API response structure
+    axios
+      .get("/api/travelers/getall")
+      .then((res) => {
+        if (res.status === 200) {
+          const reservations = res.data;
+          this.setState({
+            posts: reservations,
+            loading: false,
+          });
+        } else {
+          console.error("API request did not return a successful status.");
+          this.setState({
+            loading: false,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("API request failed:", error);
         this.setState({
-          posts: reservations,
+          loading: false,
         });
-      } else {
-        console.error("API request did not return a successful status.");
-      }
-    }).catch((error) => {
-      // Handle API request errors here (e.g., display an error message).
-      console.error("API request failed:", error);
-    });
+      });
   }
 
-  onDelete = (id) => {
-    axios.delete(`/delete/${id}`).then((res) => {
-      if (res.data.success) {
-        swal("Deleted Successful", "Category is removed", "success");
+  onDelete = (nic) => {
+    axios.delete(`/api/travelers/delete/${nic}`).then((res) => {
+      
+        swal("Success", "Traveler Deleted Successful", "success");
         this.retrievePosts();
-      } else {
-        swal("Deleted Successful", "Category is removed", "success");
-      }
+    }).catch((error) => {
+      console.error("Axios Error:", error);
+      swal("Network Error", "Failed to connect to the server", "error");
     });
   };
 
+  togglePasswordVisibility = (index) => {
+    const updatedPosts = [...this.state.posts];
+    updatedPosts[index].passwordVisible = !updatedPosts[index].passwordVisible;
+    this.setState({ posts: updatedPosts });
+  };
+
   render() {
+    const { posts } = this.state;
+
     return (
-      <div className="tabl">
-        <div>
-          <br />
-          <h2 className="text1">Travellers Profile Details</h2>
+      <div className="d-flex align-items-center justify-content-center h-100">
+        <div className="container card p-5 m-5">
+          <h1
+            className="text-center"
+            style={{ color: "#FF5733", fontFamily: "Baufra" }}
+          >
+            <b>Traveller Profile Details</b>
+          </h1>
 
-          <div>
-            <table className="table table-striped table-bordered table-hover">
-              <thead className="thead-dark">
-                <tr>
-                  <th scope="col">Sup ID</th>
-                  <th scope="col">NIC</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Phone</th>
-                  <th scope="col">Dob</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Password</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.posts.map((post, index) => (
-                  <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{post.nic}</td>
-                    <td>{post.name}</td>
-                    <td>{post.phone}</td>
-                    <td>{post.dob}</td>
-                    <td>{post.email}</td>
-                    <td>{post.password}</td>
-                    <td>{post.status}</td>
-                    <td>
-                      <a className="btn btn-success" href={`/tprofile/${post._id}`}>
-                        <i className="fas fa-eye"></i>&nbsp;View
-                      </a>
-
-                      <a className="btn btn-warning" href={`/supplier/update/${post._id}`}>
-                        <i className="fas fa-edit"></i>&nbsp;Edit
-                      </a>
-                      <a
-                        className="btn btn-danger"
-                        href="#"
-                        onClick={() => this.onDelete(post._id)}
-                      >
-                        <i className="fas fa-edit"></i>&nbsp;Delete
-                      </a>
-                    </td>
+          <div className="container">
+            {this.state.loading ? (
+              <div className="text-center">
+                <img src={loadingGif} alt="Loading..." />
+              </div>
+            ) : (
+              <table class="table bordered">
+                <thead>
+                  <tr>
+                    {" "}
+                    <th scope="col">#</th>
+                    <th scope="col">NIC</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Dob</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {posts.map((post, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{post.nic}</td>
+                      <td>{post.name}</td>
+                      <td>{post.phone}</td>
+                      <td>{new Date(post.dob).toLocaleDateString()}</td>
+                      <td>{post.email}</td>
+                      <td>{post.status === 1 ? "Active" : "Inactive"}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <Link
+                            to={`/travellerprofile/${post.nic}`}
+                            className="btn btn-outline-success mx-2"
+                          >
+                            <FontAwesomeIcon icon={faEye} />
+                            &nbsp;View
+                          </Link>
+                          {post.status === 1 && (
+                            <Link
+                              to={`/edittravel/${post.nic}`}
+                              className="btn btn-outline-dark mx-2"
+                            >
+                              <FontAwesomeIcon icon={faEdit} />
+                              &nbsp;Edit
+                            </Link>
+                          )}
+                          <button
+                            className="btn btn-outline-danger mx-2"
+                            onClick={() => this.onDelete(post.nic)}
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                            &nbsp;Delete
+                          </button>{" "}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

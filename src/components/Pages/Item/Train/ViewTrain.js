@@ -25,7 +25,8 @@ function ViewTrain() {
   if (loading) {
     return (
       <div className="container text-center">
-        <img src={loadingGif} alt="Loading..." />
+        <img src={loadingGif} alt="Loading..."
+        style={{ height: "30%", width: "30%" }} />
       </div>
     );
   }
