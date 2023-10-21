@@ -4,6 +4,9 @@ import swal from "sweetalert";
 import "./Train.css";
 import { Link } from "react-router-dom";
 import loadingGif from "../../../images/loading.gif";
+import jspdf from 'jspdf'
+import "jspdf-autotable"
+import img from '../../../images/logo.png';
 
 class TrainHistory extends Component {
   constructor(props) {
@@ -60,11 +63,50 @@ class TrainHistory extends Component {
   };
 
   render() {
+    const generatePDF = Trains => {
+
+      const doc = new jspdf();
+      const tableColumn = ["Train Name", "Date", "Start Time", "Start Location", "Destination", "Class", "Seat Count", "Reserved Seats"];
+      const tableRows = [];
+  
+      Trains.map(Train => {
+          const TrainData = [
+            Train.name,
+            new Date(Train.date).toLocaleDateString(),
+            Train.startTime,
+            Train.startLocation,
+            Train.destination,
+            Train.trainClass,
+            Train.seatCount,
+            Train.seatCount - Train.remainingSeats
+              
+             
+          ];
+          tableRows.push(TrainData);
+      })
+      doc.text("Trains History Report", 14, 15).setFontSize(12);
+      doc.addImage(img, 'JPEG', 185, 5, 15, 15);
+      doc.text("MakeMyTrip", 180, 25).setFontSize(10);
+      doc.autoTable(tableColumn, tableRows, { styles: { fontSize: 8, }, startY: 35 });
+      doc.save(`Train_history_Report`);
+    };
+
     return (
 <div className="d-flex align-items-center justify-content-center h-100">
       <div className='container card p-5 m-5'>
       <h2 className='text-center'>Train History</h2>
       <div className='container'>
+      <div className="button-container d-flex justify-content-between align-items-center">
+  
+  <button
+    type="button"
+    onClick={() => generatePDF(this.state.posts)}
+    className="btn btn-secondary btn-sm"
+  >
+    Generate Report
+  </button>
+</div>
+
           {this.state.loading ? (
             <div className="text-center">
               <img src={loadingGif} alt="Loading..." />

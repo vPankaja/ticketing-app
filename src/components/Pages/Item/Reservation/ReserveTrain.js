@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import swal from "sweetalert";
+import { MD5 } from "crypto-js";
 
 function ReserveTrain() {
+
+
   const location = useLocation();
   const [formData, setFormData] = useState({
     nic: "",
@@ -19,6 +22,74 @@ function ReserveTrain() {
     seatCount: "",
     status: "0",
   });
+
+
+
+  const script=document.createElement('script');
+  script.src="https://www.payhere.lk/lib/payhere.js";
+
+
+  let merchantSecret  = 'MTEyNDE0NjU3MTc1ODExMDAwNzEzMDIyMTk3MzAwOTM2MjQyNw=='; //Replace with your own merchant secret
+  let merchantId      = '1223220'; //Replace with your own merchant id
+  let orderId         = '12345';
+  let amount          = parseFloat(formData.price);
+  let hashedSecret    = MD5(merchantSecret).toString().toUpperCase();
+  let amountFormated  = parseFloat( amount ).toLocaleString( 'en-us', { minimumFractionDigits : 2 } ).replaceAll(',', '');
+  let currency        = 'LKR';
+  let hash            = MD5(merchantId + orderId + amountFormated + currency + hashedSecret).toString().toUpperCase();
+
+
+    //PaHere Payload
+
+    const payment = {
+        "sandbox": true, //Enable sandbox mode
+        "merchant_id": merchantId,
+        "return_url": `localhost`,
+        "cancel_url": `localhsot`,
+        "notify_url": `localhost`, 
+        "first_name": 'ftest',
+        "last_name": 'ltest',
+        "email": 'test@test.com',
+        "phone": "0711234567",
+        "address": "Address",
+        "city": 'Colombo',
+        "country": 'Sri Lanka',
+        "order_id": orderId,
+        "items": "Fashion Items",
+        "currency": 'LKR',
+        "amount": amountFormated,
+        "hash": hash
+    };
+
+    // Triggered when completed
+    window.payhere.onCompleted = function onCompleted(orderId) {
+        console.log("COMPLETED : ", orderId)
+        handleReservation();
+    };
+
+    // Triggered when dismissed
+    window.payhere.onDismissed = function onDismissed() {
+
+        console.log("DISMISSED")
+
+    };
+
+    // Triggerd when error occured 
+    window.payhere.onError = function onError(error) {
+
+        console.log("ERROR CCC : ", error)
+
+    };
+
+
+    const payHereHandler = (event) => {
+        console.log("PAYHERE HANDLER... CCC ")
+
+        window.payhere.startPayment(payment)
+
+    }
+
+
 
 
   const handleNICChange = (e) => {
@@ -161,7 +232,7 @@ function ReserveTrain() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={handleReservation}
+                  onClick={payHereHandler}
                   style={{ width: "100%" }}
                 >
                   Reserve

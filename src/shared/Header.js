@@ -2,9 +2,20 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../components/images/logo.png";
 import "./header.css";
+import Header_Train from "./Header_Train";
 
 function Header() {
   const location = useLocation();
+  const userRole = localStorage.getItem("userRole");
+  console.log(userRole);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userRole");
+    window.location.href = '/login';
+  };
+
+  // Check if the current path is "/login"
+  const isLoginPath = location.pathname === '/login';
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
@@ -17,7 +28,7 @@ function Header() {
           alt="MakeMyTrip Logo"
         />
       </a>
-      <span className="site-name">MakeMyTrip</span>
+      <span className="site-name">E-TICKET</span>
       <button
         className="navbar-toggler"
         type="button"
@@ -41,55 +52,41 @@ function Header() {
               Search Train
             </Link>
           </li>
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Train Management
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link
-                className={`dropdown-item ${location.pathname === '/alltrains' ? 'active' : ''}`}
-                to="/alltrains"
-              >
-                All Train
-              </Link>
-              <Link
-                className={`dropdown-item ${location.pathname === '/addtrain' ? 'active' : ''}`}
-                to="/addtrain"
-              >
-                Add Trains
-              </Link>
-              <Link
-                className={`dropdown-item ${location.pathname === '/trainhistory' ? 'active' : ''}`}
-                to="/trainhistory"
-              >
-                Train History
-              </Link>
+          {userRole === 'BOfficer' && <Header_Train />}
+          {(userRole === 'BOfficer' || userRole === 'TAgent') && (
+            <div>
+              <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
+                <Link className="nav-link" to="/tablereser">
+                  Reservation Management
+                </Link>
+              </li>
             </div>
-          </li>
-          <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
-            <Link className="nav-link" to="/tablereser">
-              Reservation Management
-            </Link>
-          </li>
-          <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
-            <Link className="nav-link" to="/tableprofile">
-              Traveler Management
-            </Link>
-          </li>
-          <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
-            <Link className="nav-link" to="#">
-              User Management
-            </Link>
-          </li>
-          
+          )}
+          {(userRole === 'BOfficer' || userRole === 'TAgent') && (
+            <div>
+              <li className={`nav-item ${location.pathname === '#' ? 'active' : ''}`}>
+                <Link className="nav-link" to="/tableprofile">
+                  Traveler Management
+                </Link>
+              </li>
+            </div>
+          )}
+          {userRole === 'BOfficer' && (
+            <div>
+              <li className={`nav-item ${location.pathname === '/tableuser' ? 'active' : ''}`}>
+                <Link className="nav-link" to="/tableuser">
+                  User Management
+                </Link>
+              </li>
+            </div>
+          )}
+          {!isLoginPath && (userRole === 'BOfficer' || userRole === 'TAgent') &&( 
+            <li>
+              <button className="btn btn-outline-dark btn-sm" onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

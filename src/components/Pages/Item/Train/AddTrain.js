@@ -435,7 +435,7 @@ export default class AddTrainReservation extends Component {
                     </tbody>
                   </table>
                   <button
-                    className="btn btn-primary btn-lg"
+                    className="btn btn-primary btn-sm"
                     type="submit"
                     href="/allTrains"
                     onClick={this.onSubmit}

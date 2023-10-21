@@ -22,6 +22,9 @@ import ReserveTrain from './components/Pages/Item/Reservation/ReserveTrain';
 import EditTraveller from './components/Pages/Item/Traveller/EditTraveller';
 import TravellerProfile from './components/Pages/Item/Traveller/TravellerProfile';
 import TableProfile from './components/Pages/Item/Traveller/TableProfile';
+import AddTraveler from './components/Pages/Item/Traveller/AddTraveler';
+import AddUser from './components/Pages/Item/Users/AddUser';
+import EditUser from './components/Pages/Item/Users/EditUser';
 
 const App = () => {
   return (
@@ -53,8 +56,11 @@ const App = () => {
 
             {/* User */}
             <Route path="/tableuser" element={<UsersTable />} />
+            <Route path="/adduser" element={<AddUser />} />
+            <Route path="/updateuser/:id" element={<EditUser />} />
 
             {/* Traveller */}
+            <Route path="/addtraveler" element={<AddTraveler />} />
             <Route path="/edittravel/:nic" element={<EditTraveller />} />
             <Route path="/travellerprofile/:nic" element={<TravellerProfile />} />
             <Route path="/tableprofile" element={<TableProfile />} />

@@ -7,6 +7,7 @@ import loadingGif from "../../../images/loading.gif";
 function TravellerProfile() {
   const { nic } = useParams();
   const [loading, setLoading] = useState(true);
+  const userRole = localStorage.getItem("userRole");
   const [travelerData, setTravelerData] = useState({
     nic: "",
     name: "",
@@ -127,7 +128,9 @@ if (loading) {
                       </tr>
                     </tbody>
                   </table>
+                  {userRole==='BOfficer'&&
                   <div className="text-center">
+                    
     <button
         className={`btn btn-sm ${travelerData.status === 1 ? 'green-button' : 'yellow-button'} mx-auto d-flex justify-content-center`}
         type="button"
@@ -138,12 +141,11 @@ if (loading) {
             fontWeight: "bold",
             padding: "5px 10px",
         }}
-        onClick={() => handleFormSubmit()}
-    >
+        onClick={() => handleFormSubmit()}>
         {travelerData.status === 1 ? "Deactivate" : "Activate"}
     </button>
 </div>
-
+}
 
                 </div>
               </div>

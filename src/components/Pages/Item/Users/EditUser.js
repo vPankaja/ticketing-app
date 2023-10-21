@@ -3,11 +3,12 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import loadingGif from "../../../images/loading.gif";
 import swal from "sweetalert";
+import Tagent from "../../../images/tagent.jpg";
 
-function EditTraveller() {
-    const { nic } = useParams();
+function EditUser() {
+    const { id } = useParams();
 
-    const [travelerData, setTravelerData] = useState({
+    const [userData, setuserData] = useState({
         nic: "",
         name: "",
         phone: "",
@@ -20,8 +21,8 @@ function EditTraveller() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setTravelerData({
-            ...travelerData,
+        setuserData({
+            ...userData,
             [name]: value,
         });
     };
@@ -29,17 +30,14 @@ function EditTraveller() {
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        const formattedDOB = convertToDateTime(travelerData.dob);
-        if (formattedDOB) {
             const requestData = {
-                ...travelerData,
-                nic: nic,
-                status: travelerData.status,
-                dob: formattedDOB.toISOString(), // Convert to ISO format
+                ...userData,
+                id: id,
+                status: userData.status,
             };
 
             axios
-                .put(`/api/travelers/update/${nic}`, requestData)
+                .put(`/api/users/update/${id}`, requestData)
                 .then((res) => {
                     console.log('Traveler details updated:', res.data);
                     swal("Success", 'Traveler details updated Successfully.', "success");
@@ -52,10 +50,6 @@ function EditTraveller() {
                         console.log("Server response data:", error.response.data);
                     }
                 });
-        } else {
-            console.error("Invalid DOB format");
-            // Handle the case where the DOB is in an incorrect format
-        }
     }
 
     function formatDate(dateString) {
@@ -75,12 +69,12 @@ function EditTraveller() {
     
 
     useEffect(() => {
-        if (nic) {
+        if (id) {
             axios
-                .get(`/api/travelers/get/${nic}`)
+                .get(`/api/users/get/${id}`)
                 .then((res) => {
                     if (res.data && res.data.length > 0) {
-                        setTravelerData(res.data[0]);
+                        setuserData(res.data[0]);
                         setLoading(false);
                     }
                 })
@@ -88,7 +82,7 @@ function EditTraveller() {
                     console.error("API request failed:", error);
                 });
         }
-    }, [nic]);
+    }, [id]);
 
     if (loading) {
         return (
@@ -107,7 +101,7 @@ function EditTraveller() {
             <div className="row">
                 <div className="col-md-6">
                     <img
-                        src="https://img.freepik.com/free-vector/travelers-concept-illustration_114360-2602.jpg"
+                        src={Tagent}
                         alt="Item Image"
                         className="img-fluid"
                         style={{ height: "80%" }}
@@ -119,84 +113,93 @@ function EditTraveller() {
                         <div className="col-md-6">
                             <div className="card" style={{ width: "500px", marginBottom: "60px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)" }}>
                                 <div className="card-body">
-                                    <div className="back-button-container">
-                                        <Link
-                                            to="#"
-                                            onClick={() => window.history.back()}
-                                            className="back-button"
-                                        >
-                                            &lt; Back
-                                        </Link>
-                                    </div>
+                                <div className="back-button-container">
+        <Link
+          to="#"
+          onClick={() => window.history.back()}
+          className="back-button"
+        >
+          &lt; Back
+        </Link>
+      </div>
                                     <h1 className="text-center" style={{ color: '#FF5733', fontFamily: 'Baufra' }}>
-                                        <b>Edit Traveler Details</b>
+                                        <b>Edit User Details</b>
                                     </h1>
+
                                     <form onSubmit={handleFormSubmit}>
                                         <div className="form-group">
-                                            <label><b>NIC:</b></label>
+                                            <label><b>NIC :</b></label>
                                             <input
                                                 type="text"
                                                 name="nic"
-                                                value={travelerData.nic}
+                                                value={userData.nic}
                                                 onChange={handleInputChange}
                                                 className="form-control"
-                                                readOnly 
+                                                
                                             />
                                         </div>
                                         <div className="row">
                                             <div className="col">
                                                 <div className="form-group">
-                                                    <label><b>Name:</b></label>
+                                                    <label><b>Name :</b></label>
                                                     <input
                                                         type="text"
                                                         name="name"
-                                                        value={travelerData.name}
+                                                        value={userData.name}
                                                         onChange={handleInputChange}
                                                         className="form-control"
+                                                        
                                                     />
                                                 </div>
                                             </div>
-                                            
-                                        </div>
-                                        <div className="row">
-                                        <div className="col">
-    <div className="form-group">
-        <label><b>DOB:</b></label>
-        <input
-            type="text"
-            name="dob"
-            value={formatDate(travelerData.dob)}
-            onChange={handleInputChange}
-            className="form-control"
-        />
-    </div>
-</div>
-
-<div className="col">
+                                            <div className="col">
                                                 <div className="form-group">
-                                                    <label><b>Phone</b></label>
+                                                    <label><b>Phone :</b></label>
                                                     <input
                                                         type="text"
                                                         name="phone"
-                                                        value={travelerData.phone}
+                                                        value={userData.phone}
                                                         onChange={handleInputChange}
                                                         className="form-control"
+                                                        
                                                     />
                                                 </div>
                                             </div>
-</div><div className="form-group">
-            <label><b>Email:</b></label>
-            <input
-                type="email"
-                name="email"
-                value={travelerData.email}
-                onChange={handleInputChange}
-                className="form-control"
-            />
-        </div>
-
+                                        </div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="form-group">
+                                                    <label><b>
+                                                        DOB :</b></label>
+                                                    <input
+                                                        type="text"
+                                                        name="dob"
+                                                        value={userData.dob}
+                                                        onChange={handleInputChange}
+                                                        className="form-control"
+                                                        
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col">
+                                                <div className="form-group">
+                                                    <label><b>Email :</b></label>
+                                                    <input
+                                                        type="text"
+                                                        name="email"
+                                                        value={userData.email}
+                                                        onChange={handleInputChange}
+                                                        className="form-control"
+                                                        
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+            
                                         <button
-                                            className="btn btn-primary btn-sm"
+                                            className="btn btn-primary btn-lg"
                                             type="submit"
                                             style={{
                                                 marginTop: "15px",
@@ -220,4 +223,4 @@ function EditTraveller() {
     );
 }
 
-export default EditTraveller;
+export default EditUser;
