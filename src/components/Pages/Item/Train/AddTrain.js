@@ -141,7 +141,6 @@ export default class AddTrainReservation extends Component {
     }
   };
 
-  
   validateForm = () => {
     const {
       name,

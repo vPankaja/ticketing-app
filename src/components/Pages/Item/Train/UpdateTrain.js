@@ -437,7 +437,7 @@ function UpdateTrainReservation() {
                   <tbody>
                     {state.stoppingStations.map((station, index) => (
                       <tr key={index}>
-                        <td>{index+1}</td>
+                        <td>{index + 1}</td>
                         <td>{station.stationName}</td>
                         <td>{station.arrivalTime}</td>
                         <td>{station.departureTime}</td>

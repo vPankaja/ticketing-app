@@ -32,13 +32,21 @@ export default class AddTraveler extends Component {
     if (
       this.validateForm() &&
       this.state.password === this.state.confirmpassword
-    ) {this.setState({
+    ) {
+      this.setState({
         status: 1,
       });
-      
 
-      const { nic, name, phone, dob, email, password, confirmpassword, status} =
-        this.state;
+      const {
+        nic,
+        name,
+        phone,
+        dob,
+        email,
+        password,
+        confirmpassword,
+        status,
+      } = this.state;
 
       const data = {
         nic,
@@ -180,20 +188,19 @@ export default class AddTraveler extends Component {
                     />
                   </div>
                   <div className="form-group" style={{ marginBottom: "15px" }}>
-  <label style={{ marginBottom: "5px" }}>
-    Date of Birth:{" "}
-  </label>
-  <input
-    type="date" 
-    id="dob"
-    className="form-control"
-    name="dob"
-    value={this.state.dob}
-    onChange={this.handleInputChange}
-    required
-  />
-</div>
-
+                    <label style={{ marginBottom: "5px" }}>
+                      Date of Birth:{" "}
+                    </label>
+                    <input
+                      type="date"
+                      id="dob"
+                      className="form-control"
+                      name="dob"
+                      value={this.state.dob}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </div>
 
                   <div className="form-group" style={{ marginBottom: "15px" }}>
                     <label style={{ marginBottom: "5px" }}>Email: </label>

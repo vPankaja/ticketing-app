@@ -14,7 +14,6 @@ import {
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-
 class UsersTable extends Component {
   constructor(props) {
     super(props);
@@ -30,12 +29,12 @@ class UsersTable extends Component {
   }
 
   retrievePosts() {
-    axios.get("/api/users/getAll")
+    axios
+      .get("/api/users/getAll")
       .then((res) => {
-        console.log(res.data); 
+        console.log(res.data);
         if (res.status === 200) {
-          
-          const reservations = res.data; 
+          const reservations = res.data;
           this.setState({
             posts: reservations,
             loading: false,
@@ -55,28 +54,20 @@ class UsersTable extends Component {
       });
   }
 
-
-
-
   onDelete = (id) => {
-    axios.delete(`/api/users/delete/${id}`).then((res) => {
-      
+    axios
+      .delete(`/api/users/delete/${id}`)
+      .then((res) => {
         swal("Success", "User Deleted Successful", "success");
         this.retrievePosts();
       })
-        .catch((error) => {
-          console.error("Axios Error:", error);
-          swal("Network Error", "Failed to connect to the server", "error");
-        });
-      
-    
+      .catch((error) => {
+        console.error("Axios Error:", error);
+        swal("Network Error", "Failed to connect to the server", "error");
+      });
   };
 
-
-
-
   render() {
-
     const generatePDF = (Users) => {
       const doc = new jspdf();
       const tableColumn = [
@@ -142,8 +133,8 @@ class UsersTable extends Component {
             ) : (
               <table class="table bordered">
                 <thead>
-            <tr>
-            <th scope="col">#</th>
+                  <tr>
+                    <th scope="col">#</th>
                     <th scope="col">NIC</th>
                     <th scope="col">Name</th>
                     <th scope="col">Phone</th>
@@ -152,24 +143,22 @@ class UsersTable extends Component {
                     <th scope="col">Role</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
-             
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.posts.map((post, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td style={{ display: "none" }}>{post.id}</td>
-                <td>{post.nic }</td>
-                <td>{post.name }</td>
-                <td>{post.phone }</td>
-                <td>{new Date(post.dob).toLocaleDateString()}</td>
-                <td>{post.email }</td>
-                <td>{post.role }</td>
-                <td>{post.status === 1 ? "Active" : "Inactive"}</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.posts.map((post, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td style={{ display: "none" }}>{post.id}</td>
+                      <td>{post.nic}</td>
+                      <td>{post.name}</td>
+                      <td>{post.phone}</td>
+                      <td>{new Date(post.dob).toLocaleDateString()}</td>
+                      <td>{post.email}</td>
+                      <td>{post.role}</td>
+                      <td>{post.status === 1 ? "Active" : "Inactive"}</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          
                           {post.status === 1 && (
                             <Link
                               to={`/updateuser/${post.id}`}
@@ -189,9 +178,9 @@ class UsersTable extends Component {
                         </div>
                       </td>
                     </tr>
-            ))}
-          </tbody>
-          </table>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
         </div>

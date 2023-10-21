@@ -15,7 +15,7 @@ export default class AddUser extends Component {
       email: "",
       password: "",
       confirmpassword: "",
-      role:"TAgent",
+      role: "TAgent",
       status: 1,
     };
   }
@@ -33,14 +33,23 @@ export default class AddUser extends Component {
     if (
       this.validateForm() &&
       this.state.password === this.state.confirmpassword
-    ) {this.setState({
+    ) {
+      this.setState({
         status: 1,
-        role:"TAgent",
+        role: "TAgent",
       });
-      
 
-      const { nic, name, phone, dob, email, password, confirmpassword,role,status} =
-        this.state;
+      const {
+        nic,
+        name,
+        phone,
+        dob,
+        email,
+        password,
+        confirmpassword,
+        role,
+        status,
+      } = this.state;
 
       const data = {
         nic,
@@ -67,7 +76,7 @@ export default class AddUser extends Component {
             email: "",
             password: "",
             confirmpassword: "",
-            role:"TAgent",
+            role: "TAgent",
             status: 1,
           });
 
@@ -184,20 +193,19 @@ export default class AddUser extends Component {
                     />
                   </div>
                   <div className="form-group" style={{ marginBottom: "15px" }}>
-  <label style={{ marginBottom: "5px" }}>
-    Date of Birth:{" "}
-  </label>
-  <input
-    type="date" 
-    id="dob"
-    className="form-control"
-    name="dob"
-    value={this.state.dob}
-    onChange={this.handleInputChange}
-    required
-  />
-</div>
-
+                    <label style={{ marginBottom: "5px" }}>
+                      Date of Birth:{" "}
+                    </label>
+                    <input
+                      type="date"
+                      id="dob"
+                      className="form-control"
+                      name="dob"
+                      value={this.state.dob}
+                      onChange={this.handleInputChange}
+                      required
+                    />
+                  </div>
 
                   <div className="form-group" style={{ marginBottom: "15px" }}>
                     <label style={{ marginBottom: "5px" }}>Email: </label>

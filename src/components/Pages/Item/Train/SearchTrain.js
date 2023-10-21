@@ -53,7 +53,11 @@ class SearchTrain extends Component {
     }
 
     if (startLocation === destination) {
-      swal("Validation Error", "Start location and destination cannot be the same.", "error");
+      swal(
+        "Validation Error",
+        "Start location and destination cannot be the same.",
+        "error"
+      );
       return false;
     }
 

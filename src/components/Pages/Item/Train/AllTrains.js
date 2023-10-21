@@ -5,13 +5,10 @@ import "./Train.css";
 import { Link } from "react-router-dom";
 import loadingGif from "../../../images/loading.gif";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import jspdf from 'jspdf'
-import "jspdf-autotable"
-import img from '../../../images/logo.png';
+import { faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import jspdf from "jspdf";
+import "jspdf-autotable";
+import img from "../../../images/logo.png";
 
 class AllTrains extends Component {
   constructor(props) {
@@ -67,35 +64,41 @@ class AllTrains extends Component {
       });
   };
 
-  
-
   render() {
-
-    const generatePDF = Trains => {
-
+    const generatePDF = (Trains) => {
       const doc = new jspdf();
-      const tableColumn = ["Train Name", "Date", "Start Time", "Start Location", "Destination", "Class", "Seat Count", "Remaining Seats"];
+      const tableColumn = [
+        "Train Name",
+        "Date",
+        "Start Time",
+        "Start Location",
+        "Destination",
+        "Class",
+        "Seat Count",
+        "Remaining Seats",
+      ];
       const tableRows = [];
-  
-      Trains.map(Train => {
-          const TrainData = [
-            Train.name,
-            new Date(Train.date).toLocaleDateString(),
-            Train.startTime,
-            Train.startLocation,
-            Train.destination,
-            Train.trainClass,
-            Train.seatCount,
-            Train.remainingSeats
-              
-             
-          ];
-          tableRows.push(TrainData);
-      })
+
+      Trains.map((Train) => {
+        const TrainData = [
+          Train.name,
+          new Date(Train.date).toLocaleDateString(),
+          Train.startTime,
+          Train.startLocation,
+          Train.destination,
+          Train.trainClass,
+          Train.seatCount,
+          Train.remainingSeats,
+        ];
+        tableRows.push(TrainData);
+      });
       doc.text("All Trains Report", 14, 15).setFontSize(12);
-      doc.addImage(img, 'JPEG', 185, 5, 15, 15);
+      doc.addImage(img, "JPEG", 185, 5, 15, 15);
       doc.text("E-TICKET", 180, 25).setFontSize(10);
-      doc.autoTable(tableColumn, tableRows, { styles: { fontSize: 8, }, startY: 35 });
+      doc.autoTable(tableColumn, tableRows, {
+        styles: { fontSize: 8 },
+        startY: 35,
+      });
       doc.save(`All_Trains_Report`);
     };
 
@@ -109,18 +112,18 @@ class AllTrains extends Component {
             <b>Train Management</b>
           </h1>
           <div className="container">
-          <div className="button-container d-flex justify-content-between align-items-center">
-  <Link to="/addTrain" className="btn btn-primary mb-3">
-    Add New Train
-  </Link>
-  <button
-    type="button"
-    onClick={() => generatePDF(this.state.posts)}
-    className="btn btn-secondary btn-sm"
-  >
-    Generate Report
-  </button>
-</div>
+            <div className="button-container d-flex justify-content-between align-items-center">
+              <Link to="/addTrain" className="btn btn-primary mb-3">
+                Add New Train
+              </Link>
+              <button
+                type="button"
+                onClick={() => generatePDF(this.state.posts)}
+                className="btn btn-secondary btn-sm"
+              >
+                Generate Report
+              </button>
+            </div>
 
             {this.state.loading ? (
               <div className="text-center">
@@ -168,7 +171,7 @@ class AllTrains extends Component {
                             className="btn btn-outline-danger mx-2"
                             onClick={() => this.onDelete(post.id)}
                           >
-                           <FontAwesomeIcon icon={faTrashAlt} />
+                            <FontAwesomeIcon icon={faTrashAlt} />
                             &nbsp;Delete
                           </button>
                         </div>
